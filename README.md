@@ -111,10 +111,10 @@ Write your code in ES6 using file `./src/index.js` (javascript project) or `./sr
  */
 ```
 
-You can use boolean variable `isBrowser` to create specific code for native JS or Node. For example:
+You can use string variable `process.env.BROWSER` to create specific code for native JS or Node. For example:
 
 ```javascript
-if (isBrowser) {
+if (process.env.BROWSER === 'true') {
   // browser specific code here
 } else {
   // node.js specific code here
