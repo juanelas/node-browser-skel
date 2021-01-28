@@ -111,15 +111,21 @@ Write your code in ES6 using file `./src/index.js` (javascript project) or `./sr
  */
 ```
 
-You can use string variable `process.env.BROWSER` to create specific code for native JS or Node. For example:
+You can use string variable `IS_BROWSER` to create specific code for native JS or Node. For example:
 
 ```javascript
-if (process.env.BROWSER === 'true') {
+if (IS_BROWSER === 'true') {
   // browser specific code here
 } else {
   // node.js specific code here
 }
 ```
+
+> In TypeScript, youh should declare the `IS_BROWSER` in every file that uses it:
+>
+> ```typescript
+> declare var IS_BROWSER: boolean
+> ```
 
 Once your source code is ready, you can build the final browser/node files (the node.js specific code will be stripped from the browser final files and vice versa) as:
 

@@ -9,7 +9,7 @@ export function echo (a) {
   /* Every if else block with isBrowser (different code for node and browser) should disable eslint rule no-lone-blocks
   */
   /* eslint-disable no-lone-blocks */
-  if (process.env.BROWSER === 'true') {
+  if (IS_BROWSER) {
     console.log('Browser echoes: ' + a)
   } else {
     console.log('Node.js echoes: ' + a)
