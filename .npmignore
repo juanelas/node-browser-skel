@@ -1,14 +1,9 @@
 # Build scripts
 build
 
-# Source files
-src
-
 # Test files
 test
-
-# Template files
-templates
+**/*.spec.ts
 
 # Logs
 logs
@@ -30,3 +25,12 @@ coverage
 
 # GitHub
 .github
+
+# tsconfig
+tsconfig.json
+
+# SRC docs
+src/docs
+
+# Test temporal files
+.mocha-ts

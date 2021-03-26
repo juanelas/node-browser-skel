@@ -1,119 +1,18 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+{{GITHUB_ACTIONS_BADGES}}
 
-# Skeleton for both Node.js and native JS modules
+# Skeleton for developing modules for browser and Node.js in Typescript
 
-Clone this repo to your desired project directory (`my-project` in the following example), unlink the git and remove unnecessary files.
+> This entire section with all its subsections (Installation, Tooling, Scripts) should be removed from your `src/docs/index.md` after installing. The rest of sections may be useful for your package readme, and you may just modified them in `src/docs/index.md` to meet your needs.
 
-## For Javascript sources
+This is a skeleton for developing JS modules in Typescript that work both in Node.js and native Javascript. The idea is that you should just focus on developing your typescript code in the `src` folder, and the necessary JS files and bundles will be created so that it can be used with no effort in every environment.
 
-```bash
-git clone https://github.com/juanelas/node-browser-skel.git my-project
-cd my-project
-rm -rf .git dist/.gitignore test/browser/.gitignore types/.gitignore .package-lock.json README.md INSTRUCTIONS.md src/index.ts
-```
-
-## For Typescript
-
-```bash
-git clone https://github.com/juanelas/node-browser-skel.git my-project
-cd my-project
-rm -rf .git dist/.gitignore test/browser/.gitignore types/.gitignore .package-lock.json README.md INSTRUCTIONS.md src/index.js
-```
-
-## Init your project
-
-Edit `package.json` to suit your needs and initialize the project with:
-
-```console
-npm i
-npm update -D
-npm run build
-git init
-git add -A
-git commit -a -m "ready to work"
-```
-
-A new JS/Typescript project is created with the following structure.
-
-```text
-.
-├── build/
-│   ├── build.docs.js
-│   ├── build.dts.js
-│   ├── rollup.config.js
-│   └── rollup.tests.config.js
-├── dist/
-│   ├── index.browser.bundle.iife.js
-│   ├── index.browser.bundle.mod.js
-│   ├── index.browser.mod.js
-│   ├── index.browser.mod.js.map
-│   ├── index.node.cjs.js
-│   ├── index.node.cjs.js.map
-│   ├── index.node.esm.js
-│   └── index.node.esm.js.map
-├── .git/
-│   └── ...
-├── .github/
-│   └── workflows/
-│       └── nodejs.yml
-├── node_modules/
-│   └── ...
-├── src/
-│   ├── index.js
-│   └── index.ts
-├── templates/
-│   ├── readme-template.md
-│   └── tests-template.html
-├── test/
-│   ├── browser/
-│   │   ├── .gitignore
-│   │   ├── index.html
-│   │   └── tests.js
-│   └── test1.js
-├── types/
-│   └── index.d.ts
-├── .vscode/
-│   ├── launch.json
-│   └── settings.json
-├── .gitignore
-├── INSTRUCTIONS.md
-├── LICENSE
-├── .npmignore
-├── package.json
-├── package-lock.json
-├── README.md
-└── tsconfig.json
-```
-
-If you code with javascript you will also have the `src/index.js` instead of `src/index.ts`.
-
-Now you are ready to bundle IIFE, ESM and CJS modules with the corresponding declaration files for TypeScript. Code follows [JavaScript Standard](https://standardjs.com) style. The bundles are created with [Rollup](https://rollupjs.org).
-
-## Document your project
-
-The `README.md` file of your project will be created during the build process, DO NOT EDIT it; edit `./templates/readme-template.md` instead. The API reference documentation will be automatically added to the end of the `README.md`.
-> The API ref is created from the JS Doc in the browser generated file `./dist/index.browser.mod.js`. Don't forget to build your JS first.
-
-After editing `./templates/readme-template.md`, you can build your `README.md` as:
-
-```console
-npm run build:docs
-```
-
-## Write JS/TS code and build for node.js and browser javascript
-
-Write your code in ES6 using file `./src/index.js` (javascript project) or `./src/index.ts` (typescript). Consider editing the @module JSON Doc tag to meet your module name and update the module description (or just remove them if your project is not a module).
-
-```javascript
-/**
- * My module description. Please update with your module data. YOU HAVE TO MANUALLY DO IT!
- * @module my-package-name
- */
-```
+Besides the actual code, you should create unit testing (mocha+chai) files either in the `test` or the `src` directory, although in the latter case only files ending with `.spec.ts` will be considered as test files.
 
 You can use string variable `IS_BROWSER` to create specific code for native JS or Node. For example:
 
-```javascript
+```typescript
 if (IS_BROWSER === 'true') {
   // browser specific code here
 } else {
@@ -121,74 +20,91 @@ if (IS_BROWSER === 'true') {
 }
 ```
 
-> In TypeScript, youh should declare the `IS_BROWSER` in every file that uses it:
->
-> ```typescript
-> declare var IS_BROWSER: boolean
-> ```
+## Installation
 
-Once your source code is ready, you can build the final browser/node files (the node.js specific code will be stripped from the browser final files and vice versa) as:
+Clone this repo to your desired project directory (`my-project` in the following example) and reset the git.
 
 ```console
-npm run build:js
+git clone https://github.com/juanelas/node-browser-skel.git my-project
+cd my-project
+rm -rf .git
+git init
+git add -A
 ```
 
-Final browser/node files include an ESM file, a bundle minified ESM file, and a bundle minified IIFE file for browsers; and a CJS module for node. There are also map files for enhanced debug.
-
-```text
-dist/
-├── index.browser.bundle.iife.js
-├── index.browser.bundle.mod.js
-├── index.browser.mod.js
-├── index.browser.mod.js.map
-├── index.node.cjs.js
-├── index.node.cjs.js.map
-├── index.node.esm.js
-└── index.node.esm.js.map
-```
-
-A file with Typescript definition types can also be built to `./types/index.d.ts` with :
+Edit `package.json` to suit your needs and initialize the project with:
 
 ```console
-npm run build:dts
-```
-
-> If you are programming in Javascript and not Typescript, consider using JS Doc with your exports. If the JS doc includes typing in the documentation, the created types definition file will honour the JS doc typing instead of using `any` everywhere.
-
-## Create and run tests for node.js and browser
-
-Mocha/Chai tests are created using Node.js common js format and should be placed in directory `./test/`. You can create separate test files but follow the instructions in `./test/test1.js`.
-
-You can run tests in Node.js with:
-
-```console
-npm test
-```
-
-The script run mocha tests with nyc (istambul) code coverage report, so that you have an idea of what portions of your code are not tested.
-
-Browser tests are built from the node.js ones:
-
-```console
-npm run build:browserTests
-```
-
-Don't forget rebuilding after adding/modifying a test.
-
-> Opening the browser tests requires a local live server to serve `./test/browser/index.html`. With VSCode, you can use the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) and just right click over the file and `Open with Live Server`; although any other server solution should be fine.
-
-## Build all in one step
-
-You can just go through all the build steps in one step:
-
-```console
+npm i
+npm update
 npm run build
 ```
 
-## GitHub Actions
+The `README.md` file is automatically generated from the `src/docs/index.md` file. EDIT `src/docs/index.md` and rewrite it to your heart's content. Recall removing the section "Skeleton for developing modules for browser and Node.js in Typescript" with all its subsections (Installation, Tooling, Scripts).
 
-If you use github as the repository for your project, a workflow file is included in `.github/workflows/nodejs.yml`. The flow basically runs and test your code in the latest NodeJs versions. It is commented out, but you could uncomment a section that, when a NPM version change is detected, publishes the package to the NPM registry and to Coveralls.io for checking/publishing the code coverage.
+## Tooling
 
-For the publication process to work, you would need first to get a token from NPM (login->click you profile icon->Auth tokens->Create New Token) and then add it as a secret with name `NPM_TOKEN` to your github repository (once logged in tgithub, go to your repository web page, Settings tab->Secrets->Add a new secret). You should also sign in to Coveralls.io and add there your github project.
+- Build: [Rollup](https://rollupjs.org) is used for generating UMD, IIFE, ESM and CJS modules with the corresponding Typescript declaration files and sourcemaps in the `dist` directory.
+- Coverage: [Nyc-Istanbul](https://github.com/istanbuljs/nyc) is used to track how well your unit-tests exercise your codebase.
+- Doc: [TsCode](https://tsdoc.org/) is used for automatically generating the [API docs](./docs/API.md). Consider documenting your code with TsCode for it to be useful.
+- Lint: [ts-stamdard](https://github.com/standard/ts-standard) is the chosen linter, although you can easily change it by any other linter (update `scripts.lint` in the `package.json`). If developing with [Visual Studio Code](https://code.visualstudio.com/), consider installing the [Standard-JS extension](https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs) and select `ts-standard` as the `Standard:engine` in the extension settings.
+- Test: [Mocha](https://mochajs.org/) with [Chai](https://www.chaijs.com/) running both in Node.js and browser (using [puppeteer](https://pptr.dev/)). Test files should be created assuming that Mocha methods and Chai are declared global, so there is no need to import them (see the provided test examples). There is also no need to create separate test files for browser and Node.js, since every file will be tested against both. Test files are transpiled using [tsc CLI](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
 
-If you are uncertain or just not interested, just remove the `.github` directory.
+## Scripts
+
+- `npm run build`. Runs the linter (`lint`), builds the JS files (`build:js`), builds the `README.md` and the API doc `./docs/API.md` (`docs`), runs the unit tests in browser (`test:browser`), and creates a coverage report of the tests run in Node.js (`coverage`). See the specific scripts for more details.
+- `npm run build:js`. Creates your distributable module files (UMD, IIFE, ESM and CJS), along with the sourcemap and typescript declaration files in the `dist` directory.
+- `npm run clean`. Cleans all the artifacts created by the rest of the script (most likely not needed).
+- `npm run coverage`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in Node.js and track how well they exercise your codebase. Besides the on-screen summary, a complete report in HTML will be generated in the `coverage` directory.
+- `npm run docs`. Generates the `README.md` and the API doc `./docs/API.md`. Some labels in the `src/README.md` file will be automatically replaced in the generated `README.md`:
+
+  - &#123;&#123;PKG_NAME&#125;&#125; is automatically replaced with property `name` in `package.json` file.
+  - &#123;&#123;PKG_CAMELCASE&#125;&#125; will be replaced by a came case transformation of the package_name.
+  - &#123;&#123;IIFE_BUNDLE&#125;&#125; will point to the IIFE bundle file if using github or gitlab as repository.
+  - &#123;&#123;ESM_BUNDLE&#125;&#125; will point to the ESM bundle file if using github or gitlab as repository.
+  - &#123;&#123;UMD_BUNDLE&#125;&#125; will point to the UMD bundle file if using github or gitlab as repository.
+  - It has also some automatically added badges (see the top of this file), that you can remove if desired.
+
+- `npm run lint`. Uses the `ts-standard` linter to fix all the project files. If unconfortable, change the linter for the one of your liking.
+- `npm run mocha -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern). Add `--watch` before the glob to start mocha in watch mode.
+- `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in both Node.js and browser (using puppeteer).
+- `npm run test:browser`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using pupppeteer).
+- `npm run test:node`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in Node.js.
+- `npm run watch`. Likely to be the default script during development. Tests are automatically reexecuted whenever a test or source file changes.
+
+# @my-scope/my-package-name
+Your package description
+
+## Usage
+
+`@my-scope/my-package-name` can be imported to your project with `npm`:
+
+```console
+npm install @my-scope/my-package-name
+```
+
+Then either require (Node.js CJS):
+
+```javascript
+const myPackageName = require('@my-scope/my-package-name')
+```
+
+or import (JavaScript ES module):
+
+```javascript
+import * as myPackageName from '@my-scope/my-package-name'
+```
+
+The appropriate version for browser or node is automatically exported.
+
+You can also download the IIFE bundle, the ESM bundle or the UMD bundle and manually add it to your project, or, if you have already imported `@my-scope/my-package-name` to your project, just get the bundles from `node_modules/@my-scope/my-package-name/dist/bundles/`.
+
+An example of usage could be:
+
+```typescript
+YOUR TYPESCRIPT EXAMPLE CODE HERE
+```
+
+## API reference documentation
+
+[Check the API](./docs/API.md)
