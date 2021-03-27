@@ -8,8 +8,6 @@
 
 This is a skeleton for developing JS modules in Typescript that work both in Node.js and native Javascript. The idea is that you should just focus on developing your typescript code in the `src/ts` folder, and the necessary JS files and bundles will be created so that it can be used with no effort in every environment.
 
-Besides the actual code, you should create unit testing (mocha+chai) files either in the `test` or the `src/ts` directory, although in the latter case only files ending with `.spec.ts` will be considered as test files.
-
 You can use string variable `IS_BROWSER` to create specific code for native JS or Node. For example:
 
 ```typescript
@@ -19,6 +17,15 @@ if (IS_BROWSER === 'true') {
   // node.js specific code here
 }
 ```
+
+Besides the actual code, you should create unit testing (mocha+chai) files either in the `test` or the `src/ts` directory, although in the latter case only files ending with `.spec.ts` will be considered as test files.
+
+When creating the tests, you MUST NOT import either `mocha`, `chai` or your package. They have been automatically added to the global scope:
+
+- `mocha` global variable points to mocha,
+- `chai` points to chai,
+- `_pkg` points to your package (all your exports),
+- `_pkgTypes` points to your package typings.
 
 ## Installation
 
@@ -73,6 +80,7 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 - `npm run watch`. Likely to be the default script during development. Tests are automatically reexecuted whenever a test or source file changes.
 
 # {{PKG_NAME}}
+
 Your package description
 
 ## Usage
