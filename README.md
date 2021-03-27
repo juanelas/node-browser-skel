@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-{{GITHUB_ACTIONS_BADGES}}
+
 
 # Skeleton for developing modules for browser and Node.js in Typescript
 
