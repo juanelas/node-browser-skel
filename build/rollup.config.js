@@ -8,7 +8,7 @@ import commonjs from '@rollup/plugin-commonjs'
 
 import { dirname, join } from 'path'
 import { existsSync } from 'fs'
-import { move } from 'fs-extra'
+import { move, removeSync } from 'fs-extra'
 import { directories, name as _name, dependencies, peerDependencies, exports, types } from '../package.json'
 
 const rootDir = join(__dirname, '..')
@@ -46,6 +46,7 @@ function moveDirPlugin (srcDir, dstDir) {
   return {
     name: 'move-dir',
     async closeBundle () {
+      removeSync(dstDir)
       move(srcDir, dstDir, { overwrite: true })
     }
   }
