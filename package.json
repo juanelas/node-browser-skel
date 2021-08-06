@@ -12,7 +12,7 @@
     "email": "email@myemaildomain.com"
   },
   "repository": "repoprovider:username/my-package-name",
-  "types": "./dist/esm/types/index.d.ts",
+  "types": "./types/index.d.ts",
   "main": "./dist/cjs/index.node.cjs",
   "browser": "./dist/esm/index.browser.js",
   "module": "./dist/esm/index.node.js",
@@ -27,7 +27,7 @@
     "./esm-browser-bundle": "./dist/bundles/esm.js",
     "./iife-browser-bundle": "./dist/bundles/iife.js",
     "./umd-browser-bundle": "./dist/bundles/umd.js",
-    "./types": "./dist/esm/types/index.d.ts"
+    "./types": "./types/index.d.ts"
   },
   "directories": {
     "build": "./build",
@@ -75,6 +75,7 @@
     "@types/chai": "^4.2.14",
     "@types/mocha": "^9.0.0",
     "chai": "^4.3.3",
+    "fs-extra": "^10.0.0",
     "glob": "^7.1.6",
     "json5": "^2.2.0",
     "minimatch": "^3.0.4",
