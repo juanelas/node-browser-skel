@@ -29,7 +29,8 @@ const input = path.join(srcDir, 'index.ts')
 if (fs.existsSync(input) !== true) throw new Error('The entry point should be index.ts')
 
 const tsBundleOptions = {
-  outDir: undefined, // ignore outDir in tsconfig.json
+  tsconfig: path.join(rootDir, 'tsconfig.json'),
+  // outDir: undefined, // ignore outDir in tsconfig.json
   exclude: ['test/**/*', 'src/**/*.spec.ts', './build/typings/global-this-pkg.d.ts']
 }
 
@@ -109,7 +110,7 @@ module.exports = [
         declarationDir: path.join(rootDir, path.dirname(pkgJson.exports['.'].node.import), 'types'),
         declarationMap: true
       }),
-      commonjs({ extensions: ['.js', '.ts'] }) // the ".ts" extension is required
+      commonjs({ extensions: ['.js', '.cjs', '.ts'] }) // the ".ts" extension is required
     ],
     external
   },
