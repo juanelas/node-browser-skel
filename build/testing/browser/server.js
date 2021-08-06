@@ -62,7 +62,8 @@ async function buildTests () {
         exportConditions: ['browser', 'module', 'import', 'default']
       }),
       commonjs()
-    ]
+    ],
+    external: [pkgJson.name]
   }
   const bundle = await rollup.rollup(inputOptions)
   const { output } = await bundle.generate({ format: 'esm' })
