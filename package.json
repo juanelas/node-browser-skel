@@ -46,6 +46,7 @@
     "lint": "ts-standard --fix",
     "mocha": "node ./build/bin/mocha-ts.js --require build/testing/mocha/mocha-init.js ",
     "version": "run-s build git:add",
+    "postversion": "git push --follow-tags",
     "test": "run-s test:browser test:node",
     "test:browser": "node build/testing/browser/index.js",
     "test:node": "npm run mocha -- '{src/ts/**/*.spec.ts,test/**/*.ts}'",
