@@ -1,4 +1,4 @@
-# @my-scope/my-package-name - v0.9.3
+# @my-scope/my-package-name - v0.9.4
 
 My module description. Please update with your module data.
 
@@ -35,4 +35,4 @@ A gratifying Hello to the input name
 
 #### Defined in
 
-[hello-world.ts:10](https://github.com/juanelas/node-browser-skel/blob/4f9e093/src/ts/hello-world.ts#L10)
+[hello-world.ts:10](https://github.com/juanelas/node-browser-skel/blob/8f72788/src/ts/hello-world.ts#L10)
