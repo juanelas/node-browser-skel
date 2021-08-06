@@ -138,7 +138,7 @@ export default [
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      commonjs({ extensions: ['.js', '.ts'] }) // the ".ts" extension is required
+      commonjs({ extensions: ['.js', '.cjs', '.ts'] }) // the ".ts" extension is required
     ]
   }
 ]
