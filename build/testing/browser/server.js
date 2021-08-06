@@ -80,7 +80,7 @@ class TestServer {
     const tests = await buildTests()
     this.server.on('request', function (req, res) {
       if (req.url === `/${name}.esm.js`) {
-        fs.readFile(path.join(rootDir, pkgJson.directories.dist, `bundles/${name}.esm.js`), function (err, data) {
+        fs.readFile(path.join(rootDir, pkgJson.directories.dist, 'bundles/esm.js'), function (err, data) {
           if (err) {
             res.writeHead(404)
             res.end(JSON.stringify(err))

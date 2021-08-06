@@ -63,16 +63,16 @@ module.exports = [
     input: input,
     output: [
       {
-        file: path.join(dstDir, `bundles/${name}.iife.js`),
+        file: path.join(dstDir, 'bundles/iife.js'),
         format: 'iife',
         name: pkgCamelisedName
       },
       {
-        file: path.join(dstDir, `bundles/${name}.esm.js`),
+        file: path.join(dstDir, 'bundles/esm.js'),
         format: 'es'
       },
       {
-        file: path.join(dstDir, `bundles/${name}.umd.js`),
+        file: path.join(dstDir, 'bundles/umd.js'),
         format: 'umd',
         name: pkgCamelisedName
       }
@@ -93,8 +93,7 @@ module.exports = [
   { // Node ESM with declaration files
     input: input,
     output: {
-      dir: path.join(rootDir, path.dirname(pkgJson.exports['.'].node.import)),
-      entryFileNames: path.basename(pkgJson.exports['.'].node.import),
+      file: path.join(rootDir, pkgJson.exports['.'].node.import),
       ...sourcemapOutputOptions,
       format: 'es'
     },
@@ -117,8 +116,7 @@ module.exports = [
   { // Node CJS
     input: input,
     output: {
-      dir: path.join(rootDir, path.dirname(pkgJson.exports['.'].node.require)),
-      entryFileNames: path.basename(pkgJson.exports['.'].node.require),
+      file: path.join(rootDir, pkgJson.exports['.'].node.require),
       ...sourcemapOutputOptions,
       format: 'cjs'
     },
