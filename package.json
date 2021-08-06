@@ -63,7 +63,8 @@
     ],
     "project": "./tsconfig.json",
     "ignore": [
-      "dist/**/*"
+      "dist/**/*",
+      "types/**/*"
     ]
   },
   "devDependencies": {
