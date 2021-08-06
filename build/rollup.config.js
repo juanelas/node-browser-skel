@@ -30,7 +30,7 @@ if (fs.existsSync(input) !== true) throw new Error('The entry point should be in
 
 const tsBundleOptions = {
   tsconfig: path.join(rootDir, 'tsconfig.json'),
-  // outDir: undefined, // ignore outDir in tsconfig.json
+  outDir: undefined, // ignore outDir in tsconfig.json
   exclude: ['test/**/*', 'src/**/*.spec.ts', './build/typings/global-this-pkg.d.ts']
 }
 
