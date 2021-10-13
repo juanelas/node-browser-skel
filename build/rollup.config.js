@@ -6,9 +6,10 @@ import { terser } from 'rollup-plugin-terser'
 import typescriptPlugin from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 
-import { dirname, join } from 'path'
-import { existsSync, moveSync, removeSync } from 'fs-extra'
-import { directories, name as _name, dependencies, peerDependencies, exports, types } from '../package.json'
+import { join } from 'path'
+import { existsSync } from 'fs-extra'
+import { directories, name as _name, dependencies, peerDependencies, exports } from '../package.json'
+import { compile } from './rollup-plugin-dts.js'
 
 const rootDir = join(__dirname, '..')
 const dstDir = join(rootDir, directories.dist)
@@ -41,18 +42,27 @@ const sourcemapOutputOptions = {
   sourcemapExcludeSources: true
 }
 
-function moveDirPlugin (srcDir, dstDir) {
+// function moveDirPlugin (srcDir, dstDir) {
+//   return {
+//     name: 'move-dir',
+//     closeBundle () {
+//       removeSync(dstDir)
+//       moveSync(srcDir, dstDir, { overwrite: true })
+//     }
+//   }
+// }
+
+function compileDts () {
   return {
-    name: 'move-dir',
+    name: 'compile-dts',
     closeBundle () {
-      removeSync(dstDir)
-      moveSync(srcDir, dstDir, { overwrite: true })
+      compile()
     }
   }
 }
 
 export default [
-  { // ESM for browsers
+  { // ESM for browsers and declarations
     input: input,
     output: [
       {
@@ -66,7 +76,8 @@ export default [
         IS_BROWSER: true,
         preventAssignment: true
       }),
-      typescriptPlugin(tsBundleOptions)
+      typescriptPlugin(tsBundleOptions),
+      compileDts()
     ],
     external
   },
@@ -101,44 +112,28 @@ export default [
       terser()
     ]
   },
-  { // Node ESM with declaration files
+  { // Node
     input: input,
-    output: {
-      file: join(rootDir, exports['.'].node.import),
-      ...sourcemapOutputOptions,
-      format: 'es'
-    },
-    plugins: [
-      replace({
-        IS_BROWSER: false,
-        preventAssignment: true
-      }),
-      typescriptPlugin({
-        ...tsBundleOptions,
-        // outDir: path.join(rootDir, path.dirname(pkgJson.exports['.'].node.import)),
-        declaration: true,
-        declarationDir: 'types',
-        declarationMap: true
-      }),
-      commonjs({ extensions: ['.js', '.cjs', '.ts'] }), // the ".ts" extension is required
-      moveDirPlugin(join(rootDir, dirname(exports['.'].node.import), 'types'), join(rootDir, dirname(types)))
+    output: [
+      {
+        file: join(rootDir, exports['.'].node.import),
+        ...sourcemapOutputOptions,
+        format: 'es'
+      },
+      {
+        file: join(rootDir, exports['.'].node.require),
+        ...sourcemapOutputOptions,
+        format: 'cjs'
+      }
     ],
-    external
-  },
-  { // Node CJS
-    input: input,
-    output: {
-      file: join(rootDir, exports['.'].node.require),
-      ...sourcemapOutputOptions,
-      format: 'cjs'
-    },
     plugins: [
       replace({
         IS_BROWSER: false,
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      commonjs({ extensions: ['.js', '.cjs', '.ts'] }) // the ".ts" extension is required
-    ]
+      commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }) // the ".ts" extension is required
+    ],
+    external
   }
 ]
