@@ -49,6 +49,7 @@
     "postversion": "git push --follow-tags",
     "test": "run-s test:browser test:node",
     "test:browser": "node build/testing/browser/index.js",
+    "test:browser-headless": "node build/testing/browser/index.js headless",
     "test:node": "npm run mocha -- '{src/ts/**/*.spec.ts,test/**/*.ts}'",
     "watch": "npm run mocha -- --watch '{src/ts/**/*.spec.ts,test/**/*.ts}'"
   },

@@ -81,7 +81,7 @@ const browserTests = async (
 const opts = {
   // puppeteer options
   puppeteerOptions: {
-    headless: true,
+    headless: false,
     devtools: true
     // slowMo: 100,
     // timeout: 10000
@@ -90,4 +90,10 @@ const opts = {
   keepServerRunning: false, // keep server running until manually closed with ctrl-c. In combination with puppeteerOptions.headless (or just connecting any browser to the test page) allows debugging in browser
   serverPort: 38000
 }
+
+const args = process.argv.slice(2)
+if (args[0] === 'headless') {
+  opts.puppeteerOptions.headless = true
+}
+
 browserTests(opts)
