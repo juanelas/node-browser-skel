@@ -11,6 +11,7 @@ const TestsBuilder = require('./builders/TestsBuilder.js')
 const rootDir = path.join(__dirname, '../../../')
 
 global.chai = chai
+global._pkg = require(rootDir)
 
 const watch = process.argv.includes('--watch') || process.argv.includes('-w')
 
