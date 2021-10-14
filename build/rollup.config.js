@@ -123,14 +123,14 @@ export default [
     input: input,
     output: [
       {
-        file: join(rootDir, exports['.'].node.import),
-        ...sourcemapOutputOptions,
-        format: 'es'
-      },
-      {
         file: join(rootDir, exports['.'].node.require),
         ...sourcemapOutputOptions,
         format: 'cjs'
+      },
+      {
+        file: join(rootDir, exports['.'].node.import),
+        ...sourcemapOutputOptions,
+        format: 'es'
       }
     ],
     plugins: [
