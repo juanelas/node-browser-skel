@@ -51,7 +51,7 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 
 ## Tooling
 
-- Build: [Rollup](https://rollupjs.org) is used for generating UMD, IIFE, ESM and CJS modules with the corresponding Typescript declaration files and sourcemaps in the `dist` directory.
+- Build: [Rollup](https://rollupjs.org) is used for generating in the `dist` directory UMD, IIFE, ESM and CJS modules with the corresponding Typescript declaration files and sourcemaps.
 - Coverage: [Nyc-Istanbul](https://github.com/istanbuljs/nyc) is used to track how well your unit-tests exercise your codebase.
 - Doc: [TsCode](https://tsdoc.org/) is used for automatically generating the [API docs](./docs/API.md). Consider documenting your code with TsCode for it to be useful.
 - Lint: [ts-stamdard](https://github.com/standard/ts-standard) is the chosen linter, although you can easily change it by any other linter (update `scripts.lint` in the `package.json`). If developing with [Visual Studio Code](https://code.visualstudio.com/), consider installing the [Standard-JS extension](https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs) and select `ts-standard` as the `Standard:engine` in the extension settings.

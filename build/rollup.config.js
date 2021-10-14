@@ -87,16 +87,24 @@ export default [
       {
         file: join(dstDir, 'bundles/iife.js'),
         format: 'iife',
-        name: pkgCamelisedName
+        name: pkgCamelisedName,
+        plugins: [terser()]
       },
       {
         file: join(dstDir, 'bundles/esm.js'),
+        ...sourcemapOutputOptions,
         format: 'es'
+      },
+      {
+        file: join(dstDir, 'bundles/esm.min.js'),
+        format: 'es',
+        plugins: [terser()]
       },
       {
         file: join(dstDir, 'bundles/umd.js'),
         format: 'umd',
-        name: pkgCamelisedName
+        name: pkgCamelisedName,
+        plugins: [terser()]
       }
     ],
     plugins: [
@@ -108,8 +116,7 @@ export default [
       resolve({
         browser: true,
         exportConditions: ['browser', 'module', 'import', 'default']
-      }),
-      terser()
+      })
     ]
   },
   { // Node

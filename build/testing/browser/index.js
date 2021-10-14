@@ -52,7 +52,6 @@ const browserTests = async (
   page.on('error', function (err) { page.emit(new Error(err)) })
 
   page.on('close', async () => {
-    console.log('Closing browser tests...')
     await close()
   })
 
@@ -61,19 +60,18 @@ const browserTests = async (
     await watchDog.catch(async (reason) => {
       console.error(reason)
     })
-    await close()
+    if (puppeteerOptions.headless === true) {
+      await close()
+    }
   }).catch(async (reason) => {
     console.error(reason)
-    await close()
   })
 
   async function close () {
-    if (puppeteerOptions.headless === true) {
-      await page.close().catch(() => {})
-      await browser.close().catch(() => {})
-    }
+    console.log('Closing browser tests...')
+    await browser.close().catch(() => {})
     if (keepServerRunning !== true) {
-      server.close().catch(() => {})
+      await server.close().catch(() => {})
     }
   }
 }
