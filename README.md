@@ -6,7 +6,7 @@
 
 > This entire section with all its subsections (Installation, Tooling, Scripts) should be removed from your `src/docs/index.md` after installing. The rest of sections may be useful for your package readme, and you may just modified them in `src/docs/index.md` to meet your needs.
 
-This is a skeleton for developing JS modules in Typescript that work both in Node.js and native Javascript. The idea is that you should just focus on developing your typescript code in the `src/ts` folder, and the necessary JS files and bundles will be created so that it can be used with no effort in every environment.
+This is a skeleton for developing JS modules in Typescript that work both in Node.js and native JavaScript. The idea is that you should just focus on developing your typescript code in the `src/ts` folder, and the necessary JS files and bundles will be created so that it can be used with no effort in every environment.
 
 You can use string variable `IS_BROWSER` to create specific code for native JS or Node. For example:
 
@@ -61,7 +61,7 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 
 - `npm run build`. Runs the linter (`lint`), builds the JS files (`build:js`), builds the `README.md` and the API doc `./docs/API.md` (`docs`), runs the unit tests in browser (`test:browser`), and creates a coverage report of the tests run in Node.js (`coverage`). See the specific scripts for more details.
 - `npm run build:js`. Creates your distributable module files (UMD, IIFE, ESM and CJS), along with the sourcemap and typescript declaration files in the `dist` directory.
-- `npm run clean`. Cleans all the artifacts created by the rest of the script (most likely not needed).
+- `npm run clean`. Cleans all the artefacts created by the rest of the script (most likely not needed).
 - `npm run coverage`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in Node.js and track how well they exercise your codebase. Besides the on-screen summary, a complete report in HTML will be generated in the `coverage` directory.
 - `npm run docs`. Generates the `README.md` and the API doc `./docs/API.md`. Some labels in the `src/README.md` file will be automatically replaced in the generated `README.md`:
 
@@ -72,10 +72,11 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
   - &#123;&#123;UMD_BUNDLE&#125;&#125; will point to the UMD bundle file if using github or gitlab as repository.
   - It has also some automatically added badges (see the top of this file), that you can remove if desired.
 
-- `npm run lint`. Uses the `ts-standard` linter to fix all the project files. If unconfortable, change the linter for the one of your liking.
+- `npm run lint`. Uses the `ts-standard` linter to fix all the project files. If uncomfortable, change the linter for the one of your liking.
 - `npm run mocha -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern). Add `--watch` before the glob to start mocha in watch mode.
 - `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in both Node.js and browser (using puppeteer).
-- `npm run test:browser`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using pupppeteer).
+- `npm run test:browser`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer). Until the browser window is closed, you can debug the tests.
+- `npm run test:browser-headless`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer) but without opening a windows (results will be shown in the node's console). This is useful for just running tests (no debugging).
 - `npm run test:node`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in Node.js.
 - `npm run watch`. Likely to be the default script during development. Tests are automatically reexecuted whenever a test or source file changes.
 
