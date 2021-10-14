@@ -41,6 +41,8 @@ const indexHtml = `<!DOCTYPE html>
     <script type="module">
       import * as _pkg from './${name}.esm.js'
       self._pkg = _pkg
+    </script>
+    <script type="module">
       import './tests.js'
       window._mocha = mocha.run()
     </script>
