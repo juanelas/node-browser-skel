@@ -1,3 +1,5 @@
+export type Response = string
+
 /**
  * Returns the a Hello to the input string name
  *
@@ -7,7 +9,7 @@
  *
  * @returns A gratifying Hello to the input name
  */
-export function helloWorld (name: string): string {
+export function helloWorld (name: string): Response {
   const text = `Hello ${name}!`
   if (IS_BROWSER) {
     console.log(`Browser says "${text}"`)

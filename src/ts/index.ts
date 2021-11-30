@@ -7,5 +7,5 @@
  * @packageDocumentation
  */
 
-export { helloWorld } from './hello-world'
+export { helloWorld, Response } from './hello-world'
 export default function sayHello (): void { console.log('hello') }
