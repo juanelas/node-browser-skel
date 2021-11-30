@@ -23,9 +23,10 @@ Besides the actual code, you should create unit testing (mocha+chai) files eithe
 
 When creating the tests, you MUST NOT import either `mocha`, `chai` or your package. They have been automatically added to the global scope:
 
-- `mocha` global variable points to mocha,
-- `chai` points to chai,
-- `_pkg` points to your package (all your exports). For compatibility with CJS you cannot access a default export as `_pkg()` and MUST use `_pkg.default()` instead.
+- `mocha` global variable points to mocha;
+- `chai` points to chai;
+- `_pkg` points to your package (all your JavaScript exports). For compatibility with CJS you cannot access a default export as `_pkg()` and MUST use `_pkg.default()` instead;
+- `_pkgTypes` points to your package TypeScript typings, such as interfaces or types.
 
 ## Installation
 
