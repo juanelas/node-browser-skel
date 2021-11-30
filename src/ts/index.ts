@@ -8,3 +8,4 @@
  */
 
 export { helloWorld } from './hello-world'
+export default function sayHello (): void { console.log('hello') }
