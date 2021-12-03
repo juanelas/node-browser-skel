@@ -25,8 +25,7 @@ When creating the tests, you MUST NOT import either `mocha`, `chai` or your pack
 
 - `mocha` global variable points to mocha;
 - `chai` points to chai;
-- `_pkg` points to your package (all your JavaScript exports). For compatibility with CJS you cannot access a default export as `_pkg()` and MUST use `_pkg.default()` instead;
-- `_pkgTypes` points to your package TypeScript typings, such as interfaces or types.
+- `_pkg` points to your package (all your JavaScript exports). For compatibility with CJS you cannot access a default export as `_pkg()` and MUST use `_pkg.default()` instead
 
 ## Installation
 
