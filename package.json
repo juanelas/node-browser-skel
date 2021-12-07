@@ -67,11 +67,13 @@
     "project": "./tsconfig.json",
     "ignore": [
       "dist/**/*",
-      "types/**/*"
+      "types/**/*",
+      "build/testing/types/**/*"
     ]
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-multi-entry": "^4.0.0",
     "@rollup/plugin-node-resolve": "^13.0.5",
     "@rollup/plugin-replace": "^3.0.0",

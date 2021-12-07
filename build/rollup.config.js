@@ -5,6 +5,7 @@ import replace from '@rollup/plugin-replace'
 import { terser } from 'rollup-plugin-terser'
 import typescriptPlugin from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
 
 import { join } from 'path'
 import { existsSync } from 'fs-extra'
@@ -32,8 +33,8 @@ if (existsSync(input) !== true) throw new Error('The entry point should be index
 const tsBundleOptions = {
   tsconfig: join(rootDir, 'tsconfig.json'),
   outDir: undefined, // ignore outDir in tsconfig.json
-  include: ['src/ts/**/*', 'build/typings/**/*'],
-  exclude: ['src/**/*.spec.ts', './build/typings/global-this-pkg.d.ts']
+  include: ['src/ts/**/*', 'build/typings/is-browser.d.ts'],
+  exclude: ['src/**/*.spec.ts']
 }
 
 const external = [...Object.keys(dependencies || {}), ...Object.keys(peerDependencies || {})]
@@ -42,16 +43,6 @@ const sourcemapOutputOptions = {
   sourcemap: 'inline',
   sourcemapExcludeSources: true
 }
-
-// function moveDirPlugin (srcDir, dstDir) {
-//   return {
-//     name: 'move-dir',
-//     closeBundle () {
-//       removeSync(dstDir)
-//       moveSync(srcDir, dstDir, { overwrite: true })
-//     }
-//   }
-// }
 
 function compileDts () {
   return {
@@ -78,7 +69,8 @@ export default [
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      compileDts()
+      compileDts(),
+      json()
     ],
     external
   },
@@ -116,8 +108,18 @@ export default [
       typescriptPlugin(tsBundleOptions),
       resolve({
         browser: true,
-        exportConditions: ['browser', 'module', 'import', 'default']
-      })
+        exportConditions: ['browser', 'module', 'import', 'default'],
+        mainFields: ['browser', 'module', 'main']
+      }),
+      commonjs({
+        namedExports: {
+          'bn.js': ['BN'],
+          'hash.js': ['hmac', 'ripemd160', 'sha256', 'sha512'],
+          elliptic: ['ec'],
+          'scrypt-js': ['scrypt', 'syncScrypt']
+        }
+      }),
+      json()
     ]
   },
   { // Node
@@ -141,7 +143,8 @@ export default [
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }) // the ".ts" extension is required
+      commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
+      json()
     ],
     external
   }
