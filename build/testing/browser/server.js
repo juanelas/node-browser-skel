@@ -11,6 +11,7 @@ const replace = require('@rollup/plugin-replace')
 const multi = require('@rollup/plugin-multi-entry')
 const typescriptPlugin = require('@rollup/plugin-typescript')
 const commonjs = require('@rollup/plugin-commonjs')
+const json = require('@rollup/plugin-json')
 
 const rootDir = path.join(__dirname, '..', '..', '..')
 
@@ -50,8 +51,7 @@ const indexHtml = `<!DOCTYPE html>
 
 const tsBundleOptions = {
   tsconfig: path.join(rootDir, 'tsconfig.json'),
-  outDir: undefined, // ignore outDir in tsconfig.json
-  exclude: ['test-vectors/**/*']
+  outDir: undefined // ignore outDir in tsconfig.json
 }
 
 async function buildTests () {
@@ -69,7 +69,8 @@ async function buildTests () {
         browser: true,
         exportConditions: ['browser', 'module', 'import', 'default']
       }),
-      commonjs()
+      commonjs(),
+      json()
     ],
     external: [pkgJson.name]
   }

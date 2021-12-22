@@ -13,6 +13,8 @@ const rootDir = path.join(__dirname, '../../../')
 global.chai = chai
 loadPkgToGlobal()
 
+global.IS_BROWSER = false
+
 const watch = process.argv.includes('--watch') || process.argv.includes('-w')
 
 const tempDir = path.join(rootDir, '.mocha-ts')
