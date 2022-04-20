@@ -27,6 +27,8 @@ When creating the tests, you MUST NOT import either `mocha`, `chai` or your pack
 - `chai` points to chai;
 - `_pkg` points to your package (all your JavaScript exports). For compatibility with CJS you cannot access a default export as `_pkg()` and MUST use `_pkg.default()` instead
 
+You can also use a `.env` file with environment variables that can be accessed in `process.env` in your tests' source files.
+
 ## Installation
 
 Clone this repo to your desired project directory (`my-project` in the following example) and reset the git.
@@ -73,7 +75,8 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
   - It has also some automatically added badges (see the top of this file), that you can remove if desired.
 
 - `npm run lint`. Uses the `ts-standard` linter to fix all the project files. If uncomfortable, change the linter for the one of your liking.
-- `npm run mocha -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern). Add `--watch` before the glob to start mocha in watch mode.
+- `npm run mocha-ts:node -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern). Add `--watch` before the glob to start mocha in watch mode.
+- `npm run mocha-ts:browser -- <glob>`. Runs mocha in a browser (using puppeteer) for the selected tests (use glob pattern). Add `headless` before the glob to start mocha in a browser but without opening a windows (results will be shown in the node's console). This is useful for just running tests (no debugging).
 - `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in both Node.js and browser (using puppeteer).
 - `npm run test:browser`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer). Until the browser window is closed, you can debug the tests.
 - `npm run test:browser-headless`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer) but without opening a windows (results will be shown in the node's console). This is useful for just running tests (no debugging).
