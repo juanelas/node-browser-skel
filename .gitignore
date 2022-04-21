@@ -13,6 +13,9 @@ node_modules
 .nyc_output
 coverage
 
+# Environment files
+*.env
+
 # Test temporal files
 .mocha-ts
 .tsconfig.json
