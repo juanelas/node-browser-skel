@@ -112,12 +112,12 @@ export default [
         mainFields: ['browser', 'module', 'main']
       }),
       commonjs({
-        namedExports: {
-          'bn.js': ['BN'],
-          'hash.js': ['hmac', 'ripemd160', 'sha256', 'sha512'],
-          elliptic: ['ec'],
-          'scrypt-js': ['scrypt', 'syncScrypt']
-        }
+        // namedExports: {
+        //   'bn.js': ['BN'],
+        //   'hash.js': ['hmac', 'ripemd160', 'sha256', 'sha512'],
+        //   elliptic: ['ec'],
+        //   'scrypt-js': ['scrypt', 'syncScrypt']
+        // }
       }),
       json()
     ]
