@@ -73,7 +73,8 @@
     "ignore": [
       "dist/**/*",
       "examples/**/*",
-      "types/**/*"
+      "types/**/*",
+      "build/testing/mocha/mocha-init.js"
     ]
   },
   "devDependencies": {

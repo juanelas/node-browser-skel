@@ -30,7 +30,7 @@ async function reloadModule () {
   // }
 }
 
-reloadModule()
+await reloadModule()
 
 global.IS_BROWSER = false
 

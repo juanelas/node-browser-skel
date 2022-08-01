@@ -7,7 +7,7 @@ import typescriptPlugin from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 
-import { dirname, join } from 'path'
+import { join } from 'path'
 import { existsSync } from 'fs-extra'
 import { directories, name as _name, exports } from '../package.json'
 import { compile } from './rollup-plugin-dts.js'
@@ -64,8 +64,6 @@ export default [
     plugins: [
       replace({
         IS_BROWSER: false,
-        __filename: `'${join(rootDir, exports['.'].node.import)}'`,
-        __dirname: `'${dirname(join(rootDir, exports['.'].node.import))}'`,
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
@@ -99,10 +97,10 @@ export default [
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      // resolve({
-      //   browser: false,
-      //   exportConditions: ['require', 'node', 'module', 'import']
-      // }),
+      resolve({
+        browser: false,
+        exportConditions: ['node']
+      }),
       commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
       json()
     ]
