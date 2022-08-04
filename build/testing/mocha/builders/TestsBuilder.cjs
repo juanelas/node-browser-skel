@@ -69,6 +69,8 @@ class TestsBuilder extends Builder {
     // source mapping eases debuging
     tsConfig.compilerOptions.sourceMap = true
 
+    tsConfig.compilerOptions.rootDir = '.'
+
     if (this.commonjs) {
       tsConfig.compilerOptions.module = 'commonjs'
     }
