@@ -67,11 +67,11 @@ export default [
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
+      compileDts(),
       // resolve({
       //   browser: false,
       //   exportConditions: ['node']
       // }),
-      compileDts(),
       commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
       json()
     ]
@@ -87,20 +87,20 @@ export default [
       }
     ],
     plugins: [
-      replace({
-        'await import(': 'require(',
-        delimiters: ['', ''],
-        preventAssignment: true
-      }),
+      // replace({
+      //   'await import(': 'require(',
+      //   delimiters: ['', ''],
+      //   preventAssignment: true
+      // }),
       replace({
         IS_BROWSER: false,
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      resolve({
-        browser: false,
-        exportConditions: ['node']
-      }),
+      // resolve({
+      //   browser: false,
+      //   exportConditions: ['node']
+      // }),
       commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
       json()
     ]
@@ -155,11 +155,11 @@ export default [
       }
     ],
     plugins: [
-      replace({
-        'await import(': 'require(',
-        delimiters: ['', ''],
-        preventAssignment: true
-      }),
+      // replace({
+      //   'await import(': 'require(',
+      //   delimiters: ['', ''],
+      //   preventAssignment: true
+      // }),
       replace({
         IS_BROWSER: true,
         preventAssignment: true

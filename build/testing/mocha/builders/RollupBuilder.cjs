@@ -1,44 +1,51 @@
-import EventEmitter from 'events'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
-import json5 from 'json5'
-import { join, resolve } from 'path'
-import { fileURLToPath } from 'url'
+const EventEmitter = require('events')
+const fs = require('fs')
+const path = require('path')
 
-import { rollup as _rollup, watch as _watch } from 'rollup'
-import loadAndParseConfigFile from 'rollup/dist/loadConfigFile.js'
+const rollup = require('rollup')
+const loadAndParseConfigFile = require('rollup/dist/loadConfigFile')
 
-import Builder from './Builder.js'
+const Builder = require('./Builder.cjs')
 
-const __dirname = resolve(fileURLToPath(import.meta.url), '../')
+const rootDir = path.join(__dirname, '../../../../')
 
-const rootDir = join(__dirname, '../../../../')
-const pkgJson = json5.parse(readFileSync(join(rootDir, 'package.json')))
+const pkgJson = require(path.join(rootDir, 'package.json'))
 
-export default class RollupBuilder extends Builder {
-  constructor ({ name = 'rollup', configPath = join(rootDir, 'rollup.config.js'), tempDir = join(rootDir, '.mocha-ts'), watch = false }) {
-    super(join(tempDir, 'semaphore'), name)
+const mochaTsRelativeDir = pkgJson.directories['mocha-ts']
+const mochaTsDir = path.join(rootDir, mochaTsRelativeDir)
+
+class RollupBuilder extends Builder {
+  constructor ({ name, configPath, tempDir }) {
+    super(path.join(tempDir, 'semaphore'), name)
+    this.tempDir = tempDir
     this.configPath = configPath
-    this.watch = watch
+    this.firstBuild = true
   }
 
-  async start () {
+  async start ({ watch = false, commonjs = false }) {
     await super.start()
 
+    this.watch = watch
+    this.commonjs = commonjs
+    this.watchedModule = commonjs ? pkgJson.exports['.'].node.require : pkgJson.exports['.'].node.import
+
     const { options } = await loadAndParseConfigFile(this.configPath)
+
     // Watch only the Node ESM module, that is the one we are going to use with mocha
     const rollupOptions = options.filter(bundle => {
       const file = (bundle.output[0].dir !== undefined)
-        ? join(bundle.output[0].dir, bundle.output[0].entryFileNames)
+        ? path.join(bundle.output[0].dir, bundle.output[0].entryFileNames)
         : bundle.output[0].file
-      return file === join(rootDir, pkgJson.exports['.'].node.import)
+      return file === path.join(rootDir, this.watchedModule)
     })[0]
     if (rollupOptions.output.length > 1) {
       rollupOptions.output = rollupOptions.output[0]
     }
 
-    this.builder = new RollupBundler(rollupOptions, this.watch)
+    this.builder = new RollupBundler({ rollupOptions, watch: this.watch, watchedModule: this.watchedModule })
 
     this.builder.on('event', event => {
+      let updateSemaphore = true
       switch (event.code) {
         case 'START':
           this.emit('busy')
@@ -55,13 +62,22 @@ export default class RollupBuilder extends Builder {
 
         case 'END':
           if (event.result) event.result.close()
-          this.emit('ready')
+          fs.mkdirSync(path.join(this.tempDir, path.dirname(this.watchedModule)), { recursive: true })
+          // console.log(path.join(this.tempDir, path.dirname(this.watchedModule)))
+          fs.copyFileSync(this.watchedModule, path.join(this.tempDir, this.watchedModule))
+
+          if (this.firstBuild) {
+            this.firstBuild = false
+            updateSemaphore = false
+          }
+          this.emit('ready', updateSemaphore)
           break
 
         case 'ERROR':
           if (event.result) event.result.close()
           this.emit('error', event.error)
-          writeFileSync(join(rootDir, pkgJson.exports['.'].node.import), '', 'utf8')
+          fs.writeFileSync(path.join(rootDir, this.watchedModule), '', 'utf8')
+          fs.writeFileSync(path.join(this.tempDir, this.watchedModule), '', 'utf8')
           this.emit('ready')
           break
 
@@ -83,21 +99,22 @@ export default class RollupBuilder extends Builder {
 }
 
 class RollupBundler extends EventEmitter {
-  constructor (rollupOptions, watch = false) {
+  constructor ({ rollupOptions, watchedModule, watch = false }) {
     super()
     this.rollupOptions = rollupOptions
     this.watch = watch
+    this.watchedModule = watchedModule
   }
 
   async start () {
     if (this.watch === true) {
-      this.watcher = _watch(this.rollupOptions)
+      this.watcher = rollup.watch(this.rollupOptions)
 
       this.watcher.on('event', event => {
         this.emit('event', event)
       })
     } else {
-      if (existsSync(join(rootDir, pkgJson.exports['.'].node.import)) === false) {
+      if (!fs.existsSync(path.join(rootDir, this.watchedModule))) {
         await this._bundle()
       } else {
         this.emit('event', { code: 'END', noBuild: true })
@@ -109,7 +126,7 @@ class RollupBundler extends EventEmitter {
     this.emit('event', { code: 'START' })
     for (const optionsObj of [].concat(this.rollupOptions)) {
       try {
-        const bundle = await _rollup(optionsObj)
+        const bundle = await rollup.rollup(optionsObj)
         try {
           await Promise.all(optionsObj.output.map(bundle.write))
           this.emit('event', { code: 'BUNDLE_END' })
@@ -127,3 +144,10 @@ class RollupBundler extends EventEmitter {
     if (this.watcher !== undefined) this.watcher.close()
   }
 }
+
+exports.RollupBuilder = RollupBuilder
+exports.rollupBuilder = new RollupBuilder({
+  name: 'rollup',
+  configPath: path.join(rootDir, pkgJson.directories.build, 'rollup.config.js'),
+  tempDir: mochaTsDir
+})

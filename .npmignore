@@ -19,8 +19,7 @@ npm-debug.log*
 # IntelliJ
 .idea
 
-# MYC output
-.nyc_output
+# Coverage
 coverage
 
 # GitHub
@@ -45,3 +44,9 @@ src/docs
 
 # docs temporal files
 .nojekyll
+
+# code of conduct
+CODE_OF_CONDUCT.md
+
+# TODO
+TO-DO.txt
