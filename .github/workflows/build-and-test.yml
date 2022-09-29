@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
-        node-version: [10.x, 16.x, 18.x]
+        node-version: [16.x, 18.x]
     steps:
       - uses: actions/checkout@v2
 
@@ -76,9 +76,9 @@ jobs:
         if: steps.check.outputs.changed == 'true'
         run: npm run docs
       
-      - name: browser tests
-        if: steps.check.outputs.changed == 'true'
-        run: npm run test:browser-headless
+      # - name: browser tests
+      #   if: steps.check.outputs.changed == 'true'
+      #   run: npm run test:browser-headless
       
       - name: node tests and coverage
         if: steps.check.outputs.changed == 'true'

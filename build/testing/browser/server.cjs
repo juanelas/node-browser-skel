@@ -84,7 +84,8 @@ async function buildTests (testFiles) {
   let bundledCode = output[0].code
   const replacements = _getEnvVarsReplacements(bundledCode)
   for (const replacement in replacements) {
-    bundledCode = bundledCode.replaceAll(replacement, replacements[replacement])
+    const regExp = new RegExp(replacement, 'g')
+    bundledCode = bundledCode.replace(regExp, replacements[replacement])
   }
   return bundledCode
 }

@@ -11,10 +11,14 @@ export type Response = string
  */
 export function helloWorld (name: string): Response {
   const text = `Hello ${name}!`
-  if (IS_BROWSER) {
-    console.log(`Browser says "${text}"`)
+  if (text === `Hello ${name}!`) {
+    if (IS_BROWSER) {
+      console.log(`Browser says "${text}"`)
+    } else {
+      console.log(`Node.js says "${text}"`)
+    }
   } else {
-    console.log(`Node.js says "${text}"`)
+    console.log('This is not going to be printed') // This line should be reported as not tested when running the coverage
   }
   return text
 }

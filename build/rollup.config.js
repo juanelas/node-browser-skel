@@ -8,7 +8,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 
 import { join } from 'path'
-import { existsSync } from 'fs-extra'
+import { existsSync } from 'fs'
 import { directories, name as _name, exports } from '../package.json'
 import { compile } from './rollup-plugin-dts.js'
 

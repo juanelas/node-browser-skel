@@ -21,11 +21,11 @@ if (IS_BROWSER === 'true') {
 
 Besides the actual code, you should create unit testing (mocha+chai) files either in the `test` or the `src/ts` directory, although in the latter case only files ending with `.spec.ts` will be considered as test files.
 
-When creating the tests, you MUST NOT import either `mocha`, `chai` or your package. They have been automatically added to the global scope:
+When creating the tests, you MUST NOT import either `mocha`, `chai` or your package. They have been automatically added to the global scope. You must import your module with the shortcut `#pkg`. In short:
 
 - `mocha` global variable points to mocha;
 - `chai` points to chai;
-- `_pkg` points to your package (all your JavaScript exports). For compatibility with CJS you cannot access a default export as `_pkg()` and MUST use `_pkg.default()` instead
+- `#pkg` points to your package (all your JavaScript exports). Use it instead any relative import when importing your module (it must be first built with `npm run build:js`)
 
 You can also use a `.env` file with environment variables that can be accessed in `process.env` in your tests' source files.
 
@@ -54,7 +54,7 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 ## Tooling
 
 - Build: [Rollup](https://rollupjs.org) is used for generating in the `dist` directory UMD, IIFE, ESM and CJS modules with the corresponding Typescript declaration files and sourcemaps.
-- Coverage: [Nyc-Istanbul](https://github.com/istanbuljs/nyc) is used to track how well your unit-tests exercise your codebase.
+- Coverage: [c8](https://github.com/bcoe/c8#c8---native-v8-code-coverage) is used to track how well your unit-tests exercise your codebase.
 - Doc: [TsCode](https://tsdoc.org/) is used for automatically generating the [API docs](./docs/API.md). Consider documenting your code with TsCode for it to be useful.
 - Lint: [ts-stamdard](https://github.com/standard/ts-standard) is the chosen linter, although you can easily change it by any other linter (update `scripts.lint` in the `package.json`). If developing with [Visual Studio Code](https://code.visualstudio.com/), consider installing the [Standard-JS extension](https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs) and select `ts-standard` as the `Standard:engine` in the extension settings.
 - Test: [Mocha](https://mochajs.org/) with [Chai](https://www.chaijs.com/) running both in Node.js and browser (using [puppeteer](https://pptr.dev/)). Test files should be created assuming that Mocha methods and Chai are declared global, so there is no need to import them (see the provided test examples). There is also no need to create separate test files for browser and Node.js, since every file will be tested against both. Test files are transpiled using [tsc CLI](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
@@ -75,13 +75,14 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
   - It has also some automatically added badges (see the top of this file), that you can remove if desired.
 
 - `npm run lint`. Uses the `ts-standard` linter to fix all the project files. If uncomfortable, change the linter for the one of your liking.
-- `npm run mocha-ts:node -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern). Add `--watch` before the glob to start mocha in watch mode.
+- `npm run mocha-ts -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern) using the **ESM version**. If `glob` is empty, it will test all the tests. Add `--watch` before the glob to start mocha in watch mode.
+- `npm run mocha-ts:cjs -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern) using the **CJS version**. If `glob` is empty, it will test all the tests. Add `--watch` before the glob to start mocha in watch mode.
 - `npm run mocha-ts:browser -- <glob>`. Runs mocha in a browser (using puppeteer) for the selected tests (use glob pattern). Add `headless` before the glob to start mocha in a browser but without opening a windows (results will be shown in the node's console). This is useful for just running tests (no debugging).
-- `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in both Node.js and browser (using puppeteer).
+- `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) for the ESM and CJS modules in Node.js, and the ESM module browser (using puppeteer).
 - `npm run test:browser`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer). Until the browser window is closed, you can debug the tests.
 - `npm run test:browser-headless`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer) but without opening a windows (results will be shown in the node's console). This is useful for just running tests (no debugging).
-- `npm run test:node`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in Node.js.
-- `npm run watch`. Likely to be the default script during development. Tests are automatically reexecuted whenever a test or source file changes.
+- `npm run test:node`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) for the ESM and CJS modules in Node.js.
+- `npm run watch -- <spec>`. Likely to be the default script during development. Tests are automatically reexecuted whenever a test or source file changes. You can optionally pass in `<spec>` one or more files, directories, or globs to test (default: `"{src/ts/**/*.spec.ts,test/**/*.ts}"`)
 
 # @my-scope/my-package-name
 
