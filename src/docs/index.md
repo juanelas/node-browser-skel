@@ -25,9 +25,14 @@ When creating the tests, you MUST NOT import either `mocha`, `chai` or your pack
 
 - `mocha` global variable points to mocha;
 - `chai` points to chai;
-- `#pkg` points to your package (all your JavaScript exports). Use it instead any relative import when importing your module (it must be first built with `npm run build:js`)
+- `#pkg` points to your package (all your JavaScript exports). Use it instead any relative import when importing your module in your tests (it must be first built with `npm run build:js`). For instance:
 
-You can also use a `.env` file with environment variables that can be accessed in `process.env` in your tests' source files.
+    ```typescript
+    import myModule from '#pkg'
+    ...
+    ```
+
+You can also use a `.env` file with environment variables that can be accessed in `process.env` in your tests' source files running both in node and browser javascript.
 
 ## Installation
 
