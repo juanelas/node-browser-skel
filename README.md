@@ -61,7 +61,7 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 
 ## Scripts
 
-- `npm run build`. Runs the linter (`lint`), builds the JS files (`build:js`), builds the `README.md` and the API doc `./docs/API.md` (`docs`), runs the unit tests in browser (`test:browser`), and creates a coverage report of the tests run in Node.js (`coverage`). See the specific scripts for more details.
+- `npm run build`. Runs the linter (`lint`), builds the JS files (`build:js`), and builds the `README.md` and the API doc `./docs/API.md` (`docs`). See the specific scripts for more details.
 - `npm run build:js`. Creates your distributable module files (UMD, IIFE, ESM and CJS), along with the sourcemap and typescript declaration files in the `dist` directory.
 - `npm run clean`. Cleans all the artefacts created by the rest of the script (most likely not needed).
 - `npm run coverage`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in Node.js and track how well they exercise your codebase. Besides the on-screen summary, a complete report in HTML will be generated in the `coverage` directory.
@@ -77,8 +77,9 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 - `npm run lint`. Uses the `ts-standard` linter to fix all the project files. If uncomfortable, change the linter for the one of your liking.
 - `npm run mocha-ts -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern) using the **ESM version**. If `glob` is empty, it will test all the tests. Add `--watch` before the glob to start mocha in watch mode.
 - `npm run mocha-ts:cjs -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern) using the **CJS version**. If `glob` is empty, it will test all the tests. Add `--watch` before the glob to start mocha in watch mode.
-- `npm run mocha-ts:browser -- <glob>`. Runs mocha in a browser (using puppeteer) for the selected tests (use glob pattern). Add `headless` before the glob to start mocha in a browser but without opening a windows (results will be shown in the node's console). This is useful for just running tests (no debugging).
-- `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) for the ESM and CJS modules in Node.js, and the ESM module browser (using puppeteer).
+- `npm run mocha-ts:browser`. Runs all mocha tests n a browser (using puppeteer) for the selected tests (use glob pattern).
+- `npm run mocha-ts:browser-headless`. Silently runs all mocha tests in a browser but without opening a browser window (results will be shown in the node's console). This is useful for just running tests (no debugging).
+- `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) for the ESM and CJS modules in Node.js, and the ESM module bundle in a browser (using puppeteer).
 - `npm run test:browser`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer). Until the browser window is closed, you can debug the tests.
 - `npm run test:browser-headless`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer) but without opening a windows (results will be shown in the node's console). This is useful for just running tests (no debugging).
 - `npm run test:node`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) for the ESM and CJS modules in Node.js.

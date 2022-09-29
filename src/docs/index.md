@@ -77,9 +77,9 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 - `npm run lint`. Uses the `ts-standard` linter to fix all the project files. If uncomfortable, change the linter for the one of your liking.
 - `npm run mocha-ts -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern) using the **ESM version**. If `glob` is empty, it will test all the tests. Add `--watch` before the glob to start mocha in watch mode.
 - `npm run mocha-ts:cjs -- <glob>`. Runs Node.js mocha for the selected tests (use glob pattern) using the **CJS version**. If `glob` is empty, it will test all the tests. Add `--watch` before the glob to start mocha in watch mode.
-- `npm run mocha-ts:browser -- <glob>`. Runs mocha in a browser (using puppeteer) for the selected tests (use glob pattern).
-- `npm run mocha-ts:browser-headless -- <glob>`. Silently run mocha test in a browser but without opening a browser window (results will be shown in the node's console). This is useful for just running tests (no debugging).
-- `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) for the ESM and CJS modules in Node.js, and the ESM module browser (using puppeteer).
+- `npm run mocha-ts:browser`. Runs all mocha tests n a browser (using puppeteer) for the selected tests (use glob pattern).
+- `npm run mocha-ts:browser-headless`. Silently runs all mocha tests in a browser but without opening a browser window (results will be shown in the node's console). This is useful for just running tests (no debugging).
+- `npm test`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) for the ESM and CJS modules in Node.js, and the ESM module bundle in a browser (using puppeteer).
 - `npm run test:browser`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer). Until the browser window is closed, you can debug the tests.
 - `npm run test:browser-headless`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) in a browser (using puppeteer) but without opening a windows (results will be shown in the node's console). This is useful for just running tests (no debugging).
 - `npm run test:node`. Runs all the unit tests (`src/**/*.spec.ts` and `test/**/*.ts`) for the ESM and CJS modules in Node.js.
