@@ -7,8 +7,8 @@ import typescriptPlugin from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 
-import { join } from 'path'
-import { existsSync } from 'fs'
+import { dirname, join } from 'path'
+import { existsSync } from 'fs-extra'
 import { directories, name as _name, exports } from '../package.json'
 import { compile } from './rollup-plugin-dts.js'
 
@@ -52,61 +52,8 @@ function compileDts () {
 }
 
 export default [
-  { // Node ESM with declarations
-    input,
-    output: [
-      {
-        file: join(rootDir, exports['.'].node.import),
-        ...sourcemapOutputOptions,
-        format: 'es'
-      }
-    ],
-    plugins: [
-      replace({
-        IS_BROWSER: false,
-        preventAssignment: true
-      }),
-      typescriptPlugin(tsBundleOptions),
-      compileDts(),
-      // resolve({
-      //   browser: false,
-      //   exportConditions: ['node']
-      // }),
-      commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
-      json()
-    ]
-  },
-  { // Node CJS
-    input,
-    output: [
-      {
-        file: join(rootDir, exports['.'].node.require),
-        ...sourcemapOutputOptions,
-        format: 'cjs',
-        exports: 'auto'
-      }
-    ],
-    plugins: [
-      // replace({
-      //   'await import(': 'require(',
-      //   delimiters: ['', ''],
-      //   preventAssignment: true
-      // }),
-      replace({
-        IS_BROWSER: false,
-        preventAssignment: true
-      }),
-      typescriptPlugin(tsBundleOptions),
-      // resolve({
-      //   browser: false,
-      //   exportConditions: ['node']
-      // }),
-      commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
-      json()
-    ]
-  },
-  { // ESM for browsers
-    input,
+  { // Browser ESM bundle
+    input: input,
     output: [
       {
         file: join(rootDir, exports['.'].default),
@@ -130,16 +77,16 @@ export default [
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      resolve({
-        browser: true,
-        exportConditions: ['browser', 'default']
-      }),
+      // resolve({
+      //   browser: true,
+      //   exportConditions: ['browser', 'default']
+      // }),
       commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
       json()
     ]
   },
   { // Browser bundles
-    input,
+    input: input,
     output: [
       {
         file: join(dstDir, 'bundles/iife.js'),
@@ -155,11 +102,6 @@ export default [
       }
     ],
     plugins: [
-      // replace({
-      //   'await import(': 'require(',
-      //   delimiters: ['', ''],
-      //   preventAssignment: true
-      // }),
       replace({
         IS_BROWSER: true,
         preventAssignment: true
@@ -170,6 +112,61 @@ export default [
         exportConditions: ['browser', 'default'],
         mainFields: ['browser', 'module', 'main']
       }),
+      commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
+      json()
+    ]
+  },
+  { // Node CJS
+    input: input,
+    output: [
+      {
+        file: join(rootDir, exports['.'].node.require),
+        ...sourcemapOutputOptions,
+        format: 'cjs',
+        exports: 'auto'
+      }
+    ],
+    plugins: [
+      replace({
+        'await import(': 'require(',
+        delimiters: ['', ''],
+        preventAssignment: true
+      }),
+      replace({
+        IS_BROWSER: false,
+        preventAssignment: true
+      }),
+      typescriptPlugin(tsBundleOptions),
+      // resolve({
+      //   browser: false,
+      //   exportConditions: ['require', 'node', 'module', 'import']
+      // }),
+      commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
+      json()
+    ]
+  },
+  { // Node ESM and type declarations
+    input: input,
+    output: [
+      {
+        file: join(rootDir, exports['.'].node.import),
+        ...sourcemapOutputOptions,
+        format: 'es'
+      }
+    ],
+    plugins: [
+      replace({
+        IS_BROWSER: false,
+        __filename: `'${exports['.'].node.import}'`,
+        __dirname: `'${dirname(exports['.'].node.import)}'`,
+        preventAssignment: true
+      }),
+      typescriptPlugin(tsBundleOptions),
+      // resolve({
+      //   browser: false,
+      //   exportConditions: ['node']
+      // }),
+      compileDts(),
       commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
       json()
     ]
