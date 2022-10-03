@@ -28,7 +28,7 @@ When creating the tests, you MUST NOT import either `mocha`, `chai` or your pack
 - `#pkg` points to your package (all your JavaScript exports). Use it instead any relative import when importing your module in your tests (it must be first built with `npm run build:js`). For instance:
 
     ```typescript
-    import myModule from '#pkg'
+    import * as myModule from '#pkg'
     ...
     ```
 

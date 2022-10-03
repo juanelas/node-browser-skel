@@ -78,7 +78,6 @@
       "IS_BROWSER",
       "browser",
       "page",
-      "_pkg",
       "chai"
     ],
     "project": "tsconfig.json",
