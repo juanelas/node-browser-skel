@@ -50,7 +50,7 @@
     "build": "run-s lint build:js docs",
     "build:js": "rollup -c build/rollup.config.js",
     "clean": "rimraf .mocha-ts coverage dist types docs",
-    "coverage": "c8 --check-coverage --exclude '{src/ts/**/*.spec.ts,test,test-vectors,build}' --exclude-after-remap --reporter=text --reporter=lcov node ./build/bin/mocha-ts.cjs --commonjs ",
+    "coverage": "c8 --clean --check-coverage --exclude '{src/ts/**/*.spec.ts,test,test-vectors,build}' --exclude-after-remap --reporter=text --reporter=lcov node ./build/bin/mocha-ts.cjs --commonjs ",
     "docs": "node build/build.docs.cjs",
     "git:add": "git add -A",
     "lint": "ts-standard --fix",
@@ -71,6 +71,7 @@
     "watch": "npm run mocha-ts:watch "
   },
   "ts-standard": {
+    "project": "tsconfig.json",
     "env": [
       "mocha"
     ],
@@ -80,7 +81,6 @@
       "page",
       "chai"
     ],
-    "project": "tsconfig.json",
     "ignore": [
       "dist/**/*",
       "examples/**/*",

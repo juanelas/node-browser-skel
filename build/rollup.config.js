@@ -53,7 +53,7 @@ function compileDts () {
 
 export default [
   { // Node ESM with declarations
-    input: input,
+    input,
     output: [
       {
         file: join(rootDir, exports['.'].node.import),
@@ -77,7 +77,7 @@ export default [
     ]
   },
   { // Node CJS
-    input: input,
+    input,
     output: [
       {
         file: join(rootDir, exports['.'].node.require),
@@ -106,7 +106,7 @@ export default [
     ]
   },
   { // ESM for browsers
-    input: input,
+    input,
     output: [
       {
         file: join(rootDir, exports['.'].default),
@@ -139,7 +139,7 @@ export default [
     ]
   },
   { // Browser bundles
-    input: input,
+    input,
     output: [
       {
         file: join(dstDir, 'bundles/iife.js'),
