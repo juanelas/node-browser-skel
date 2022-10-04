@@ -41,57 +41,57 @@ jobs:
         name: browser tests
         run: npm run test:browser-headless
 
-  publication:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+  # publication:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
       
-      - uses: EndBug/version-check@v1
-        id: check
+  #     - uses: EndBug/version-check@v1
+  #       id: check
 
-      - name: check version changes
-        if: steps.check.outputs.changed == 'true'
-        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+  #     - name: check version changes
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
 
-      - uses: actions/setup-node@v1
-        if: steps.check.outputs.changed == 'true'
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
+  #     - uses: actions/setup-node@v1
+  #       if: steps.check.outputs.changed == 'true'
+  #       with:
+  #         node-version: 16
+  #         registry-url: https://registry.npmjs.org/
       
-      - name: install
-        if: steps.check.outputs.changed == 'true'
-        run: npm ci
+  #     - name: install
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm ci
       
-      - name: lint
-        if: steps.check.outputs.changed == 'true'
-        run: npm run lint
+  #     - name: lint
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm run lint
       
-      - name: build
-        if: steps.check.outputs.changed == 'true'
-        run: npm run build:js
+  #     - name: build
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm run build:js
       
-      - name: docs
-        if: steps.check.outputs.changed == 'true'
-        run: npm run docs
+  #     - name: docs
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm run docs
       
-      # - name: browser tests
-      #   if: steps.check.outputs.changed == 'true'
-      #   run: npm run test:browser-headless
+  #     # - name: browser tests
+  #     #   if: steps.check.outputs.changed == 'true'
+  #     #   run: npm run test:browser-headless
       
-      - name: node tests and coverage
-        if: steps.check.outputs.changed == 'true'
-        run: npm run coverage
+  #     - name: node tests and coverage
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm run coverage
       
-      - name: send report to coveralls.io
-        if: steps.check.outputs.changed == 'true'
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+  #     # - name: send report to coveralls.io
+  #     #   if: steps.check.outputs.changed == 'true'
+  #     #   uses: coverallsapp/github-action@master
+  #     #   with:
+  #     #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: publish to NPM
-        if: steps.check.outputs.changed == 'true'
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #     - name: publish to NPM
+  #       if: steps.check.outputs.changed == 'true'
+  #       run: npm publish --access public
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

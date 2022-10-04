@@ -97,7 +97,7 @@ if (repoProvider) {
       esmBundle = `[ESM bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/main/${esmBundlePath})`
       umdBundle = `[UMD bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/main/${umdBundlePath})`
       workflowBadget = `[![Node.js CI](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml)`
-      coverallsBadge = `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=main)](https://coveralls.io/github/${repoUsername}/${repoName}?branch=main)`
+      // coverallsBadge = `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=main)](https://coveralls.io/github/${repoUsername}/${repoName}?branch=main)`
       break
 
     case 'gitlab':
