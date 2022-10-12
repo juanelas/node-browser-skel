@@ -85,6 +85,7 @@
       "dist/**/*",
       "examples/**/*",
       "types/**/*",
+      "benchmark/**/*",
       "build/testing/mocha/mocha-init.js"
     ]
   },

@@ -4,6 +4,7 @@ build
 # Test files
 test
 **/*.spec.ts
+test-vectors
 
 # Logs
 logs
@@ -50,3 +51,6 @@ CODE_OF_CONDUCT.md
 
 # TODO
 TO-DO.txt
+
+# benchmark
+benchmark

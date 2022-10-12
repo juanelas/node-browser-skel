@@ -30,13 +30,18 @@ function renameJsToCjs (dir, fileList = []) {
   const files = fs.readdirSync(dir)
 
   files.forEach(file => {
-    if (fs.statSync(path.join(dir, file)).isDirectory()) {
-      fileList = renameJsToCjs(path.join(dir, file), fileList)
+    const srcFile = path.join(dir, file)
+    if (fs.statSync(srcFile).isDirectory()) {
+      fileList = renameJsToCjs(srcFile, fileList)
     } else {
       const match = file.match(/(.*)\.js$/)
       if (match !== null) {
         const filename = match[1]
-        fs.renameSync(path.join(dir, file), path.join(dir, `${filename}.cjs`))
+        const dstFile = path.join(dir, `${filename}.cjs`)
+        fs.renameSync(srcFile, dstFile)
+        const fileContents = fs.readFileSync(dstFile, 'utf8')
+        const updatedFileContents = fileContents.replace(/(require\([`'"])(\..*)([`'"])/g, '$1$2.cjs$3')
+        fs.writeFileSync(dstFile, updatedFileContents, { encoding: 'utf8' })
       }
     }
   })
