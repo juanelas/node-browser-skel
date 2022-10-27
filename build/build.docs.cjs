@@ -97,6 +97,7 @@ if (repoProvider) {
       esmBundle = `[ESM bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/main/${esmBundlePath})`
       umdBundle = `[UMD bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/main/${umdBundlePath})`
       workflowBadget = `[![Node.js CI](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml)`
+      coverallsBadge = ''
       // coverallsBadge = `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=main)](https://coveralls.io/github/${repoUsername}/${repoName}?branch=main)`
       break
 
@@ -120,9 +121,9 @@ let template = fs.readFileSync(templateFile, { encoding: 'UTF-8' })
   .replace(/\{\{UMD_BUNDLE\}\}/g, umdBundle || 'UMD bundle')
 
 if (repoProvider && repoProvider === 'github') {
-  template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}/g, workflowBadget + '\n' + coverallsBadge)
+  template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}\n/gs, (workflowBadget ?? '') + (coverallsBadge ? '\n' + coverallsBadge : '') + '\n')
 } else {
-  template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}/g, '')
+  template = template.replace(/\{\{GITHUB_ACTIONS_BADGES\}\}\n/gs, '')
 }
 
 const readmeFile = path.join(rootDir, 'README.md')
