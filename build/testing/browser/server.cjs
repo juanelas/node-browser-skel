@@ -204,7 +204,7 @@ function _getEnvVarsReplacements (testsCode) {
     }
   }
   if (missingEnvVars.length > 0) {
-    throw EvalError('The folloinwg environment variables are missing in your .env file: ' + missingEnvVars)
+    console.warn('The folloinwg environment variables may be missing in your .env file: ' + [...(new Set(missingEnvVars)).values()].join(', '))
   }
   return replacements
 }
