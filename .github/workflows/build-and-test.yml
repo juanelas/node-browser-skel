@@ -41,12 +41,6 @@ jobs:
         # env:
         #   VARIABLE1: ${{ secrets.VARIABLE1 }}
         #   VARIABLE2: ${{ secrets.VARIABLE2 }}
-      
-      # - name: send report to coveralls.io
-      #   if: steps.check.outputs.changed == 'true'
-      #   uses: coverallsapp/github-action@master
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
   browser:
     name: tests in browser
@@ -69,7 +63,7 @@ jobs:
         #   VARIABLE1: ${{ secrets.VARIABLE1 }}
         #   VARIABLE2: ${{ secrets.VARIABLE2 }}
 
-  # npm-publish:
+  # publish:
   #   needs: [node, browser]
   #   runs-on: ubuntu-latest
   #   steps:
@@ -81,6 +75,17 @@ jobs:
   #       with:
   #         node-version: "18.x"
   #         registry-url: "https://registry.npmjs.org"
+
+  #     # - name: install
+  #     #   run: npm ci
+        
+  #     # - name: node cjs tests with coverage
+  #     #   run: npm run coverage
+
+  #     # - name: send report to coveralls.io
+  #     #   uses: coverallsapp/github-action@master
+  #     #   with:
+  #     #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
   #     - name: NPM publish
   #       run: npm publish --access public
