@@ -128,4 +128,4 @@ YOUR TYPESCRIPT EXAMPLE CODE HERE
 
 ## API reference documentation
 
-[Check the API](./docs/API.md)
+[Check the API](docs/API.md)
