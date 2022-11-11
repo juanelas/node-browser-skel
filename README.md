@@ -72,6 +72,7 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 - `npm run docs`. Generates the `README.md` and the API doc `./docs/API.md` (consider documenting your exported classes/functions using [TSDoc](https://tsdoc.org/) for a meaningful API doc). Some labels in the `src/README.md` file will be automatically replaced in the generated `README.md`:
 
   - &#123;&#123;PKG_NAME&#125;&#125; is automatically replaced with property `name` in `package.json` file.
+  - &#123;&#123;PKG_DESCRIPTION&#125;&#125; is automatically replaced with property `description` in `package.json` file.
   - &#123;&#123;PKG_CAMELCASE&#125;&#125; will be replaced by a camel case transformation of the package name.
   - &#123;&#123;IIFE_BUNDLE&#125;&#125; will point to the IIFE bundle file if using github or gitlab as repository.
   - &#123;&#123;ESM_BUNDLE&#125;&#125; will point to the ESM bundle file if using github or gitlab as repository.
@@ -91,7 +92,9 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 
 # @my-scope/my-package-name
 
-Your package description
+My package is wonderful
+
+More details about you package...
 
 ## Usage
 

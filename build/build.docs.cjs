@@ -115,6 +115,7 @@ if (repoProvider) {
 const templateFile = path.join(rootDir, pkgJson.directories.src, 'docs/index.md')
 let template = fs.readFileSync(templateFile, { encoding: 'UTF-8' })
   .replace(/\{\{PKG_NAME\}\}/g, pkgJson.name)
+  .replace(/\{\{PKG_DESCRIPTION\}\}/g, pkgJson.description)
   .replace(/\{\{PKG_CAMELCASE\}\}/g, camelCaseName)
   .replace(/\{\{IIFE_BUNDLE\}\}/g, iifeBundle || 'IIFE bundle')
   .replace(/\{\{ESM_BUNDLE\}\}/g, esmBundle || 'ESM bundle')
