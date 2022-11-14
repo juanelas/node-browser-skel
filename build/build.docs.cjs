@@ -12,18 +12,19 @@ const rootDir = path.join(__dirname, '..')
 const templateFilePath = path.join(rootDir, pkgJson.directories.src, 'docs/index.md')
 let template = fs.readFileSync(templateFilePath, { encoding: 'utf-8' })
 
-// Let us replace relative paths
-replaceRelativeLinks()
+async function main () {
+  // Let us replace variables and badges
+  variableReplacements()
 
-// Let us replace variables and badges
-variableReplacements()
+  // Generate API doc with typedoc
+  await typedoc()
+  replaceRelativeLinks()
 
-const readmeFile = path.join(rootDir, 'README.md')
-fs.writeFileSync(readmeFile, template)
+  const readmeFile = path.join(rootDir, 'README.md')
+  fs.writeFileSync(readmeFile, template)
+}
 
-// Generate API doc with typedoc
-typedoc()
-
+main()
 /* ------------------------------------------------------------------------- |
 |                               UTILITY FUNCTIONS                            |
 | ------------------------------------------------------------------------- */
