@@ -8,4 +8,7 @@
  */
 
 export { helloWorld, Response } from './hello-world'
-export default function sayHello (): void { console.log('hello') }
+export default async function sayHello (): Promise<void> {
+  const helloWorld = (await import('./hello-world')).helloWorld
+  await helloWorld('hello')
+}

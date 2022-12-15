@@ -26,6 +26,9 @@
       },
       "default": "./dist/esm/index.browser.js"
     },
+    "./dist/cjs/index.node": "./dist/cjs/index.node.cjs",
+    "./dist/esm/index.node": "./dist/esm/index.node.js",
+    "./dist/esm/index.browser": "./dist/esm/index.browser.js",
     "./esm-browser-bundle": "./dist/bundles/esm.min.js",
     "./iife-browser-bundle": "./dist/bundles/iife.js",
     "./umd-browser-bundle": "./dist/bundles/umd.js",
@@ -89,6 +92,15 @@
       "types/**/*",
       "benchmark/**/*"
     ]
+  },
+  "nodeBrowserSkel": {
+    "badges": {
+      "workflow": true,
+      "coveralls": true
+    },
+    "git": {
+      "branch": "main"
+    }
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^23.0.2",

@@ -125,11 +125,6 @@ export default [
     ],
     plugins: [
       replace({
-        'await import(': 'require(',
-        delimiters: ['', ''],
-        preventAssignment: true
-      }),
-      replace({
         IS_BROWSER: false,
         preventAssignment: true
       }),

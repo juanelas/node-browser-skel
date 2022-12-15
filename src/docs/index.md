@@ -97,7 +97,7 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 
 More details about you package...
 
-## Usage
+## Install and use
 
 `{{PKG_NAME}}` can be imported to your project with `npm`:
 
@@ -117,11 +117,21 @@ or import (JavaScript ES module):
 import * as {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
 ```
 
-The appropriate version for browser or node is automatically exported.
+> The appropriate version for browser or node should be automatically chosen when importing. However, if your bundler does not import the appropriate module version (node esm, node cjs or browser esm), you can force it to use a specific one by just importing one of the followings:
+>
+> - `{{PKG_NAME}}/dist/cjs/index.node`: for Node.js CJS module
+> - `{{PKG_NAME}}/dist/esm/index.node`: for Node.js ESM module
+> - `{{PKG_NAME}}/dist/esm/index.browser`: for browser ESM module
+>
+> If you are coding TypeScript, types will not be automatically detected when using the specific versions. You can easily get the types in by creating a `{{PKG_NAME}}.d.ts` file with just the line:
+>
+> ```typescript
+> declare module '{{PKG_NAME}}/dist/esm/index.browser' // use the specific file you were importing
+> ```
 
 You can also download the {{IIFE_BUNDLE}}, the {{ESM_BUNDLE}} or the {{UMD_BUNDLE}} and manually add it to your project, or, if you have already installed `{{PKG_NAME}}` in your project, just get the bundles from `node_modules/{{PKG_NAME}}/dist/bundles/`.
 
-An example of usage could be:
+## Usage example
 
 ```typescript
 YOUR TYPESCRIPT EXAMPLE CODE HERE

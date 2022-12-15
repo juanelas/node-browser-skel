@@ -96,7 +96,7 @@ My package is wonderful
 
 More details about you package...
 
-## Usage
+## Install and use
 
 `@my-scope/my-package-name` can be imported to your project with `npm`:
 
@@ -116,11 +116,21 @@ or import (JavaScript ES module):
 import * as myPackageName from '@my-scope/my-package-name'
 ```
 
-The appropriate version for browser or node is automatically exported.
+> The appropriate version for browser or node should be automatically chosen when importing. However, if your bundler does not import the appropriate module version (node esm, node cjs or browser esm), you can force it to use a specific one by just importing one of the followings:
+>
+> - `@my-scope/my-package-name/dist/cjs/index.node`: for Node.js CJS module
+> - `@my-scope/my-package-name/dist/esm/index.node`: for Node.js ESM module
+> - `@my-scope/my-package-name/dist/esm/index.browser`: for browser ESM module
+>
+> If you are coding TypeScript, types will not be automatically detected when using the specific versions. You can easily get the types in by creating a `@my-scope/my-package-name.d.ts` file with just the line:
+>
+> ```typescript
+> declare module '@my-scope/my-package-name/dist/esm/index.browser' // use the specific file you were importing
+> ```
 
 You can also download the IIFE bundle, the ESM bundle or the UMD bundle and manually add it to your project, or, if you have already installed `@my-scope/my-package-name` in your project, just get the bundles from `node_modules/@my-scope/my-package-name/dist/bundles/`.
 
-An example of usage could be:
+## Usage example
 
 ```typescript
 YOUR TYPESCRIPT EXAMPLE CODE HERE
