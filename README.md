@@ -122,7 +122,7 @@ import * as myPackageName from '@my-scope/my-package-name'
 > - `@my-scope/my-package-name/dist/esm/index.node`: for Node.js ESM module
 > - `@my-scope/my-package-name/dist/esm/index.browser`: for browser ESM module
 >
-> If you are coding TypeScript, types will not be automatically detected when using the specific versions. You can easily get the types in by creating a `@my-scope/my-package-name.d.ts` file with just the line:
+> If you are coding TypeScript, types will not be automatically detected when using the specific versions. You can easily get the types in by creating adding to a types declaration file (`.d.ts`) the following line:
 >
 > ```typescript
 > declare module '@my-scope/my-package-name/dist/esm/index.browser' // use the specific file you were importing

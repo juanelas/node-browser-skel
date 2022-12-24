@@ -1,5 +1,6 @@
 'use strict'
 
+import inject from '@rollup/plugin-inject'
 import { nodeResolve as resolve } from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
 import { terser } from 'rollup-plugin-terser'
@@ -128,6 +129,9 @@ export default [
         IS_BROWSER: false,
         preventAssignment: true
       }),
+      inject({
+        crypto: 'crypto'
+      }),
       typescriptPlugin(tsBundleOptions),
       // resolve({
       //   browser: false,
@@ -155,6 +159,9 @@ export default [
         __filename: `'${exports['.'].node.import}'`,
         __dirname: `'${dirname(exports['.'].node.import)}'`,
         preventAssignment: true
+      }),
+      inject({
+        crypto: 'crypto'
       }),
       typescriptPlugin(tsBundleOptions),
       // resolve({
