@@ -1,6 +1,6 @@
 import { helloWorld } from '#pkg'
 
-describe('testing function helloWorld() with ts file in the test directory', function () {
+describe(`testing ${_MODULE_TYPE}-module function helloWorld() with ts file in the test directory`, function () {
   const inputs = ['Alice', 'Bob']
   for (const input of inputs) {
     describe(`helloWorld(${input})`, function () {

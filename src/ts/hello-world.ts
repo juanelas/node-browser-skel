@@ -10,6 +10,7 @@ export type Response = string
  * @returns A gratifying Hello to the input name
  */
 export async function helloWorld (name: string): Promise<Response> {
+  console.log(`Running helloWorld in a ${_MODULE_TYPE} module`)
   const text = `Hello ${name}!`
   if (text === `Hello ${name}!`) {
     if (IS_BROWSER) {

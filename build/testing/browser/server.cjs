@@ -49,7 +49,9 @@ const indexHtml = `<!DOCTYPE html>
 
 const tsBundleOptions = {
   tsconfig: path.join(rootDir, 'tsconfig.json'),
-  outDir: undefined // ignore outDir in tsconfig.json
+  outDir: undefined, // ignore outDir in tsconfig.json
+  include: ['src/ts/**/*', 'build/typings/is-browser.d.ts'],
+  exclude: ['src/**/*.spec.ts']
 }
 
 async function buildTests (testFiles) {
@@ -67,13 +69,14 @@ async function buildTests (testFiles) {
       }),
       replace({
         IS_BROWSER: true,
+        _MODULE_TYPE: "'ESM'",
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
       resolve({
         browser: true,
-        exportConditions: ['browser', 'default'],
-        mainFields: ['browser', 'module', 'main'],
+        // exportConditions: ['browser', 'default'],
+        mainFields: ['browser'],
         preferBuiltins: false
       }),
       commonjs()
@@ -99,14 +102,14 @@ class TestServer {
 
   async init (testFiles) {
     /** Let us first check if the necessary files are built, and if not, build */
-    if (!fs.existsSync(pkgJson.exports['./esm-browser-bundle'])) {
+    if (!fs.existsSync(pkgJson.exports['./esm-browser-bundle-nomin'])) {
       await runScript(path.join(rootDir, 'node_modules', '.bin', 'rollup'), ['-c', 'build/rollup.config.js'])
     }
 
     const tests = await buildTests(testFiles)
     this.server.on('request', function (req, res) {
       if (req.url === `/${name}.esm.js`) {
-        fs.readFile(path.join(rootDir, pkgJson.exports['./esm-browser-bundle']), function (err, data) {
+        fs.readFile(path.join(rootDir, pkgJson.exports['./esm-browser-bundle-nomin']), function (err, data) {
           if (err) {
             res.writeHead(404)
             res.end(JSON.stringify(err))

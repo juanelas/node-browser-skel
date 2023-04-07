@@ -33,6 +33,25 @@ When creating the tests, you MUST NOT import either `mocha`, `chai` or your pack
 
 You can also use a `.env` file with environment variables that can be accessed in `process.env` in your tests' source files running both in node and browser javascript.
 
+> If you want your module typings to be compatible with `node16` and `nodenext` module resolution (which require extensions for relative imports), please consider adding the `.js` to any relative import you are using. For instance:
+>
+> ```typescript
+> import { myFn } from './utils.js'
+> ```
+>
+> or:
+>
+> ```typescript
+> import { myFn } from './utils/index.js'
+> ```
+>
+> instead of
+>
+> ```typescript
+> import { myFn } from './utils'
+> ```
+>
+
 ## Installation
 
 Clone this repo to your desired project directory (`my-project` in the following example) and reset the git.
