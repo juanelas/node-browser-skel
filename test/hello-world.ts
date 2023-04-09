@@ -5,7 +5,7 @@ describe(`testing ${_MODULE_TYPE}-module function helloWorld() with ts file in t
   for (const input of inputs) {
     describe(`helloWorld(${input})`, function () {
       it(`should return "Hello ${input}!"`, async function () {
-        const ret = await helloWorld(input)
+        const ret: string = await helloWorld(input)
         chai.expect(ret).to.equal(`Hello ${input}!`)
       })
       it('should print \'node\' in node and \'browser\' in a browser', function () {

@@ -9,7 +9,6 @@ require('dotenv').config()
 const rollup = require('rollup')
 const resolve = require('@rollup/plugin-node-resolve').nodeResolve
 const replace = require('@rollup/plugin-replace')
-const multi = require('@rollup/plugin-multi-entry')
 const typescriptPlugin = require('@rollup/plugin-typescript')
 const commonjs = require('@rollup/plugin-commonjs')
 const json = require('@rollup/plugin-json')
@@ -49,18 +48,15 @@ const indexHtml = `<!DOCTYPE html>
 
 const tsBundleOptions = {
   tsconfig: path.join(rootDir, 'tsconfig.json'),
-  outDir: undefined, // ignore outDir in tsconfig.json
-  include: ['src/ts/**/*', 'build/typings/is-browser.d.ts'],
-  exclude: ['src/**/*.spec.ts']
+  outDir: undefined // ignore outDir in tsconfig.json
+  // include: ['build/typings/is-browser.d.ts']
 }
 
 async function buildTests (testFiles) {
   // create a bundle
-  const input = testFiles ?? [path.join(rootDir, pkgJson.directories.test, '**/*.ts'), path.join(rootDir, pkgJson.directories.src, '**/*.spec.ts')]
   const inputOptions = {
-    input,
+    input: testFiles,
     plugins: [
-      multi(),
       json(),
       replace({
         '#pkg': `/${name}.esm.js`,
@@ -75,9 +71,8 @@ async function buildTests (testFiles) {
       typescriptPlugin(tsBundleOptions),
       resolve({
         browser: true,
-        // exportConditions: ['browser', 'default'],
-        mainFields: ['browser'],
-        preferBuiltins: false
+        exportConditions: ['browser', 'default'],
+        mainFields: ['browser', 'module', 'main']
       }),
       commonjs()
     ],
