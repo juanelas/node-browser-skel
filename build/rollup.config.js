@@ -137,6 +137,11 @@ export default [
     ],
     plugins: [
       replace({
+        'await import(': 'require(',
+        delimiters: ['', ''],
+        preventAssignment: true
+      }),
+      replace({
         IS_BROWSER: false,
         _MODULE_TYPE: "'CJS'",
         preventAssignment: true
@@ -147,7 +152,7 @@ export default [
       typescriptPlugin(tsBundleOptions),
       // resolve({
       //   browser: false,
-      //   exportConditions: ['require', 'node', 'module', 'import']
+      //   exportConditions: ['require', 'node', 'module']
       // }),
       commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
       json()
