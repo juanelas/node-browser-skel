@@ -4,11 +4,11 @@ describe(`testing ${_MODULE_TYPE}-module function helloWorld() with ts file in t
   const inputs = ['Alice', 'Bob']
   for (const input of inputs) {
     describe(`helloWorld(${input})`, function () {
-      it(`should return "Hello ${input}!"`, async function () {
+      it(`should have returned "Hello ${input}!"`, async function () {
         const ret: string = await helloWorld(input)
         chai.expect(ret).to.equal(`Hello ${input}!`)
       })
-      it('should print \'node\' in node and \'browser\' in a browser', function () {
+      it('should have printed \'node\' in node and \'browser\' in a browser', function () {
         const output = IS_BROWSER ? 'browser' : 'node'
         if (IS_BROWSER) {
           console.log(output)
