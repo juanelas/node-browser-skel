@@ -8,10 +8,10 @@ import replace from '@rollup/plugin-replace'
 import terser from '@rollup/plugin-terser'
 import rollupPluginTs from '@rollup/plugin-typescript'
 import { existsSync, readFileSync } from 'fs'
-import { dirname, join } from 'path'
+import { builtinModules } from 'module'
+import { join } from 'path'
 import dts from 'rollup-plugin-dts'
 import { compile } from './rollup-plugin-dts.js'
-import { builtinModules } from 'module'
 
 import * as url from 'url'
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
@@ -206,14 +206,15 @@ export default [
       replace({
         IS_BROWSER: false,
         _MODULE_TYPE: "'ESM'",
-        __filename: `'${pkgJson.exports['.'].node.import.default}'`,
-        __dirname: `'${dirname(pkgJson.exports['.'].node.import.default)}'`,
+        __filename: 'fileURLToPath(import.meta.url)',
+        __dirname: 'fileURLToPath(new URL(\'.\', import.meta.url))',
         preventAssignment: true
       }),
       rollupPluginTs(tsPluginOptions),
       compileDts(tmpDeclarationsDir),
       inject({
-        crypto: ['crypto', 'webcrypto']
+        crypto: ['crypto', 'webcrypto'],
+        fileURLToPath: ['url', 'fileURLToPath']
       }),
       commonjs({ extensions: ['.js', '.cjs', '.jsx', '.cjsx'] }),
       json(),
