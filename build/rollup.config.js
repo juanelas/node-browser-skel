@@ -100,6 +100,7 @@ export default [
     plugins: [
       replace({
         IS_BROWSER: true,
+        environment: 'browser',
         _MODULE_TYPE: "'ESM'",
         preventAssignment: true
       }),
@@ -142,6 +143,7 @@ export default [
     plugins: [
       replace({
         IS_BROWSER: true,
+        environment: 'browser',
         _MODULE_TYPE: "'BUNDLE'",
         preventAssignment: true
       }),
@@ -175,6 +177,7 @@ export default [
       }),
       replace({
         IS_BROWSER: false,
+        environment: 'nodejs',
         _MODULE_TYPE: "'CJS'",
         preventAssignment: true
       }),
@@ -205,6 +208,7 @@ export default [
     plugins: [
       replace({
         IS_BROWSER: false,
+        environment: 'nodejs',
         _MODULE_TYPE: "'ESM'",
         __filename: 'fileURLToPath(import.meta.url)',
         __dirname: 'fileURLToPath(new URL(\'.\', import.meta.url))',
