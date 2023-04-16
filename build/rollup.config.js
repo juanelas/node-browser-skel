@@ -164,17 +164,12 @@ export default [
         ...sourcemapOutputOptions,
         format: 'cjs',
         exports: 'auto',
-        plugins: [
-          terser()
-        ]
+        interop: 'auto',
+        dynamicImportInCjs: false,
+        plugins: [terser()]
       }
     ],
     plugins: [
-      replace({
-        'await import(': 'require(',
-        delimiters: ['', ''],
-        preventAssignment: true
-      }),
       replace({
         IS_BROWSER: false,
         environment: 'nodejs',
@@ -200,9 +195,7 @@ export default [
         file: join(rootDir, pkgJson.exports['.'].node.import.default),
         ...sourcemapOutputOptions,
         format: 'es',
-        plugins: [
-          terser()
-        ]
+        plugins: [terser()]
       }
     ],
     plugins: [
