@@ -61,7 +61,7 @@ const browserTests = async (
     await watchDog.catch(async (reason) => {
       console.error(reason)
     })
-    if (puppeteerOptions.headless === true) {
+    if (puppeteerOptions.headless === 'new') {
       await close()
     }
   }).catch(async (reason) => {
@@ -113,7 +113,7 @@ const opts = {
 
 const args = process.argv.slice(2)
 if (args[0] === 'headless') {
-  opts.puppeteerOptions.headless = true
+  opts.puppeteerOptions.headless = 'new'
   args.shift()
 }
 
