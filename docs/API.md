@@ -25,7 +25,7 @@ This module runs perfectly in node.js and browsers
 
 #### Defined in
 
-[hello-world.ts:1](https://github.com/juanelas/node-browser-skel/blob/ceeeda2/src/ts/hello-world.ts#L1)
+[hello-world.ts:1](https://github.com/juanelas/node-browser-skel/blob/f75815d/src/ts/hello-world.ts#L1)
 
 ## Functions
 
@@ -39,7 +39,7 @@ This module runs perfectly in node.js and browsers
 
 #### Defined in
 
-[index.ts:12](https://github.com/juanelas/node-browser-skel/blob/ceeeda2/src/ts/index.ts#L12)
+[index.ts:12](https://github.com/juanelas/node-browser-skel/blob/f75815d/src/ts/index.ts#L12)
 
 ___
 
@@ -67,4 +67,4 @@ A gratifying Hello to the input name
 
 #### Defined in
 
-[hello-world.ts:12](https://github.com/juanelas/node-browser-skel/blob/ceeeda2/src/ts/hello-world.ts#L12)
+[hello-world.ts:12](https://github.com/juanelas/node-browser-skel/blob/f75815d/src/ts/hello-world.ts#L12)
