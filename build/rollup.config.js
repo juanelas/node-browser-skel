@@ -49,11 +49,6 @@ const tsPluginOptions = {
   exclude: ['src/**/*.spec.ts']
 }
 
-const sourcemapOutputOptions = {
-  sourcemap: 'inline',
-  sourcemapExcludeSources: true
-}
-
 function compileDts (outDir) {
   return {
     name: 'compile-dts',
@@ -90,7 +85,6 @@ export default [
     output: [
       {
         file: join(rootDir, pkgJson.exports['.'].default.default),
-        ...sourcemapOutputOptions,
         format: 'es',
         plugins: [
           terser()
@@ -163,7 +157,6 @@ export default [
     output: [
       {
         file: join(rootDir, pkgJson.exports['.'].node.require.default),
-        ...sourcemapOutputOptions,
         format: 'cjs',
         exports: 'auto',
         interop: 'auto',
@@ -172,6 +165,11 @@ export default [
       }
     ],
     plugins: [
+      replace({
+        'await import(': 'require(',
+        delimiters: ['', ''],
+        preventAssignment: true
+      }),
       replace({
         IS_BROWSER: false,
         environment: 'nodejs',
@@ -196,7 +194,6 @@ export default [
     output: [
       {
         file: join(rootDir, pkgJson.exports['.'].node.import.default),
-        ...sourcemapOutputOptions,
         format: 'es',
         plugins: [terser()]
       }
