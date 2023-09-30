@@ -6,8 +6,8 @@ const chai = require('chai')
 const rimraf = require('rimraf')
 require('dotenv').config()
 
-const rollupBuilder = require('./builders/RollupBuilder.cjs').rollupBuilder
-const testsBuilder = require('./builders/TestsBuilder.cjs').testBuilder
+const rollupBuilder = require('./builders/RollupBuilder').rollupBuilder
+const testsBuilder = require('./builders/TestsBuilder').testBuilder
 
 const rootDir = path.join(__dirname, '../../../')
 const pkgJson = require(path.join(rootDir, 'package.json'))

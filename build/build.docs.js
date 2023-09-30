@@ -39,22 +39,16 @@ function camelise (str) {
 }
 
 async function typedoc () {
-  const app = new TypeDoc.Application()
-
   // prepare tsconfig
   const tsConfigPath = path.join(rootDir, 'tsconfig.json')
   const tempTsConfigPath = path.join(rootDir, '.tsconfig.json')
 
   const tsConfig = json5.parse(fs.readFileSync(tsConfigPath, 'utf8'))
   tsConfig.include = ['src/ts/**/*', 'build/typings/**/*.d.ts']
-  tsConfig.exclude = ['src/**/*.spec.ts']
+  tsConfig.exclude = ['src/**/*.spec.ts', 'src/**/*.test.ts']
   fs.writeFileSync(tempTsConfigPath, JSON.stringify(tsConfig, undefined, 2))
 
-  // If you want TypeDoc to load tsconfig.json / typedoc.json files
-  app.options.addReader(new TypeDoc.TSConfigReader())
-  // app.options.addReader(new TypeDoc.TypeDocReader())
-
-  app.bootstrap({
+  const app = await TypeDoc.Application.bootstrapWithPlugins({
     // typedoc options here
     tsconfig: tempTsConfigPath,
     entryPoints: ['src/ts/index.ts'],
@@ -67,7 +61,24 @@ async function typedoc () {
     excludePrivate: true
   })
 
-  const project = app.convert()
+  // If you want TypeDoc to load tsconfig.json / typedoc.json files
+  app.options.addReader(new TypeDoc.TSConfigReader())
+  // app.options.addReader(new TypeDoc.TypeDocReader())
+
+  // app.bootstrap({
+  //   // typedoc options here
+  //   tsconfig: tempTsConfigPath,
+  //   entryPoints: ['src/ts/index.ts'],
+  //   disableSources: true,
+  //   plugin: ['typedoc-plugin-markdown'],
+  //   includeVersion: true,
+  //   entryDocument: 'API.md',
+  //   readme: 'none',
+  //   hideBreadcrumbs: true,
+  //   excludePrivate: true
+  // })
+
+  const project = await app.convert()
 
   if (project) {
     // Project may not have converted correctly

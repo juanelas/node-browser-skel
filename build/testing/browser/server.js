@@ -13,7 +13,7 @@ const typescriptPlugin = require('@rollup/plugin-typescript')
 const commonjs = require('@rollup/plugin-commonjs')
 const json = require('@rollup/plugin-json')
 const multi = require('@rollup/plugin-multi-entry')
-const runScript = require('../../run-script.cjs')
+const runScript = require('../../run-script')
 
 const rootDir = path.join(__dirname, '..', '..', '..')
 
@@ -67,7 +67,7 @@ async function buildTests (testFiles) {
         preventAssignment: true
       }),
       typescriptPlugin(tsBundleOptions),
-      commonjs({ extensions: ['.js', '.cjs', '.jsx', '.cjsx'] }),
+      commonjs({ extensions: ['.js', '.jsx'] }),
       json(),
       resolve({ browser: true }),
       replace({
@@ -98,7 +98,7 @@ class TestServer {
   async init (testFiles) {
     /** Let us first check if the necessary files are built, and if not, build */
     if (!fs.existsSync(pkgJson.exports['./esm-browser-bundle-nomin'])) {
-      await runScript(path.join(rootDir, 'node_modules', '.bin', 'rollup'), ['-c', 'build/rollup.config.js'])
+      await runScript(path.join(rootDir, 'node_modules', '.bin', 'rollup'), ['-c', 'build/rollup.config.mjs'])
     }
 
     const tests = await buildTests(testFiles)

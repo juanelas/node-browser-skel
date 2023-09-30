@@ -4,7 +4,7 @@ const fs = require('fs')
 const ts = require('typescript')
 const json5 = require('json5')
 
-const Builder = require('./Builder.cjs')
+const Builder = require('./Builder')
 
 const rootDir = path.join(__dirname, '../../../../')
 
@@ -26,21 +26,21 @@ function fileChecksum (filePath) {
     .digest('hex')
 }
 
-function renameJsToCjs (dir, fileList = []) {
+function renameJsToMjs (dir, fileList = []) {
   const files = fs.readdirSync(dir)
 
   files.forEach(file => {
     const srcFile = path.join(dir, file)
     if (fs.statSync(srcFile).isDirectory()) {
-      fileList = renameJsToCjs(srcFile, fileList)
+      fileList = renameJsToMjs(srcFile, fileList)
     } else {
       const match = file.match(/(.*)\.js$/)
       if (match !== null) {
         const filename = match[1]
-        const dstFile = path.join(dir, `${filename}.cjs`)
+        const dstFile = path.join(dir, `${filename}.mjs`)
         fs.renameSync(srcFile, dstFile)
         const fileContents = fs.readFileSync(dstFile, 'utf8')
-        const updatedFileContents = fileContents.replace(/(require\([`'"])(\..*[^.]{5})([`'"])/g, '$1$2.cjs$3')
+        const updatedFileContents = fileContents.replace(/(require\([`'"])(\..*[^.]{5})([`'"])/g, '$1$2.mjs$3')
         fs.writeFileSync(dstFile, updatedFileContents, { encoding: 'utf8' })
       }
     }
@@ -64,6 +64,25 @@ function fixJsonAssertsInESMTests (dir, fileList = []) {
     }
   })
 }
+
+// function fixResolvingModule (dir, commonjs, fileList = []) {
+//   const files = fs.readdirSync(dir)
+
+//   files.forEach(file => {
+//     const srcFile = path.join(dir, file)
+//     if (fs.statSync(srcFile).isDirectory()) {
+//       fileList = fixResolvingModule(srcFile, commonjs, fileList)
+//     } else {
+//       const match = file.match(/(.*)\.js$/)
+//       if (match !== null) {
+//         const fileContents = fs.readFileSync(srcFile, 'utf8')
+//         const distPath = path.join(rootDir, commonjs ? pkgJson.exports['.'].node.require.default : pkgJson.exports['.'].node.import.default)
+//         const updatedFileContents = fileContents.replace('#pkg', path.relative(dir, distPath))
+//         fs.writeFileSync(srcFile, updatedFileContents, { encoding: 'utf8' })
+//       }
+//     }
+//   })
+// }
 
 class TestsBuilder extends Builder {
   constructor ({ name, configPath, tempDir }) {
@@ -92,9 +111,9 @@ class TestsBuilder extends Builder {
         this.testFilesChecksums[testFiles[i]] = fileChecksum(testFiles[i])
       }
     } else {
-      tsConfig.include = ['build/typings/**/*.d.ts', 'test/**/*', 'src/ts/**/*.spec.ts']
+      tsConfig.include = ['build/typings/**/*.d.ts', 'test/**/*', 'src/ts/**/*.spec.ts', 'src/**/*.test.ts']
     }
-    tsConfig.exclude = ['src/ts/**/!(.spec).ts']
+    tsConfig.exclude = ['src/ts/**/!(*.spec|*.test).ts']
 
     if (this.commonjs) {
       tsConfig.compilerOptions.module = 'commonjs'
@@ -145,10 +164,11 @@ class TestsBuilder extends Builder {
             this.testFilesChecksums[testFiles[i]] = checksum
           }
         }
-        if (this.commonjs) {
-          renameJsToCjs(mochaTsDir)
-        } else {
+
+        // fixResolvingModule(mochaTsDir, this.commonjs) // make #pkg point to the appropiate file
+        if (!this.commonjs) {
           fixJsonAssertsInESMTests(mochaTsDir)
+          renameJsToMjs(mochaTsDir)
         }
         this.emit('ready', updateSemaphore)
       } else {

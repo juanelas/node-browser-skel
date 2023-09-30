@@ -11,9 +11,10 @@ import { existsSync, readFileSync } from 'fs'
 import { builtinModules } from 'module'
 import { join } from 'path'
 import dts from 'rollup-plugin-dts'
-import { compile } from './rollup-plugin-dts.js'
+import { compileDts } from './my-rollup-plugin-dts.mjs'
 
 import * as url from 'url'
+
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 const rootDir = join(__dirname, '..')
@@ -46,16 +47,7 @@ const tsPluginOptions = {
   tsconfig: tsConfigPath,
   outDir: undefined,
   include: ['src/ts/**/*', 'build/typings/**/*.d.ts'],
-  exclude: ['src/**/*.spec.ts']
-}
-
-function compileDts (outDir) {
-  return {
-    name: 'compile-dts',
-    closeBundle () {
-      compile(outDir)
-    }
-  }
+  exclude: ['src/**/*.spec.ts', 'src/**/*.test.ts']
 }
 
 function resolveOnly (module) { // if a dev dependency is imported we will resolve it so that the dist modules always work
@@ -77,8 +69,6 @@ function resolveOnly (module) { // if a dev dependency is imported we will resol
   return false
 }
 
-const tmpDeclarationsDir = join(rootDir, '.types')
-
 export default [
   { // Browser ESM
     input,
@@ -86,8 +76,9 @@ export default [
       {
         file: join(rootDir, pkgJson.exports['.'].default.default),
         format: 'es',
+        sourcemap: 'inline',
         plugins: [
-          terser()
+          // terser()
         ]
       }
     ],
@@ -100,7 +91,7 @@ export default [
         preventAssignment: true
       }),
       rollupPluginTs(tsPluginOptions),
-      commonjs({ extensions: ['.js', '.cjs', '.jsx', '.cjsx'] }),
+      commonjs({ extensions: ['.js', '.jsx'] }),
       json(),
       resolve({
         browser: true,
@@ -147,55 +138,21 @@ export default [
         ...tsPluginOptions,
         sourceMap: false
       }),
-      commonjs({ extensions: ['.js', '.cjs', '.jsx', '.cjsx'] }),
+      commonjs({ extensions: ['.js', '.jsx'] }),
       json(),
       resolve({ browser: true })
     ]
   },
-  { // Node CJS
-    input,
-    output: [
-      {
-        file: join(rootDir, pkgJson.exports['.'].node.require.default),
-        format: 'cjs',
-        exports: 'auto',
-        interop: 'auto',
-        dynamicImportInCjs: false,
-        plugins: [terser()]
-      }
-    ],
-    plugins: [
-      replace({
-        'await import(': 'require(',
-        delimiters: ['', ''],
-        preventAssignment: true
-      }),
-      replace({
-        IS_BROWSER: false,
-        environment: 'nodejs',
-        _MODULE_TYPE: "'CJS'",
-        _NPM_PKG_VERSION: `'${process.env.npm_package_version}'` ?? "'0.0.1'",
-        preventAssignment: true
-      }),
-      rollupPluginTs(tsPluginOptions),
-      inject({
-        crypto: ['crypto', 'webcrypto']
-      }),
-      commonjs({ extensions: ['.js', '.cjs', '.jsx', '.cjsx'] }),
-      json(),
-      resolve({
-        exportConditions: ['node'],
-        resolveOnly
-      })
-    ]
-  },
-  { // Node ESM and type declarations
+  { // Node ESM
     input,
     output: [
       {
         file: join(rootDir, pkgJson.exports['.'].node.import.default),
         format: 'es',
-        plugins: [terser()]
+        sourcemap: 'inline',
+        plugins: [
+          // terser()
+        ]
       }
     ],
     plugins: [
@@ -209,12 +166,11 @@ export default [
         preventAssignment: true
       }),
       rollupPluginTs(tsPluginOptions),
-      compileDts(tmpDeclarationsDir),
       inject({
         crypto: ['crypto', 'webcrypto'],
         fileURLToPath: ['url', 'fileURLToPath']
       }),
-      commonjs({ extensions: ['.js', '.cjs', '.jsx', '.cjsx'] }),
+      commonjs({ extensions: ['.js', '.jsx'] }),
       json(),
       resolve({
         exportConditions: ['node'],
@@ -222,10 +178,51 @@ export default [
       })
     ]
   },
-  {
-    input: join(tmpDeclarationsDir, 'index.d.ts'),
-    output: [{ file: 'dist/index.d.ts', format: 'es' }],
+  { // Node CJS
+    input,
+    output: [
+      {
+        file: join(rootDir, pkgJson.exports['.'].node.require.default),
+        format: 'cjs',
+        exports: 'auto',
+        interop: 'auto',
+        dynamicImportInCjs: false,
+        sourcemap: 'inline',
+        plugins: [
+          // terser()
+        ]
+      }
+    ],
     plugins: [
+      // replace({
+      //   'await import(': 'require(',
+      //   delimiters: ['', ''],
+      //   preventAssignment: true
+      // }),
+      replace({
+        IS_BROWSER: false,
+        environment: 'nodejs',
+        _MODULE_TYPE: "'CJS'",
+        _NPM_PKG_VERSION: `'${process.env.npm_package_version}'` ?? "'0.0.1'",
+        preventAssignment: true
+      }),
+      rollupPluginTs(tsPluginOptions),
+      inject({
+        crypto: ['crypto', 'webcrypto']
+      }),
+      commonjs({ extensions: ['.js', '.jsx'] }),
+      json(),
+      resolve({
+        exportConditions: ['node'],
+        resolveOnly
+      })
+    ]
+  },
+  { // a bundle of declarations to index.d.ts
+    input,
+    output: [{ file: join(rootDir, pkgJson.types), format: 'es' }],
+    plugins: [
+      compileDts(),
       dts({
         respectExternal: true
       })

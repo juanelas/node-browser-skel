@@ -16,7 +16,7 @@ const browserTests = async (
       devtools: true
     }
   }, testFiles) => {
-  const server = require('./server.cjs').server
+  const server = require('./server.js').server
   await server.init(testFiles)
   await server.listen(serverPort)
   const browser = await puppeteer.launch(puppeteerOptions)
@@ -79,7 +79,7 @@ const browserTests = async (
 
 function processedTestFiles (testFilesStr) {
   if (testFilesStr === undefined) {
-    testFilesStr = [pkgJson.directories.test + '/**/*.ts', pkgJson.directories.src + '/**/*.spec.ts']
+    testFilesStr = [pkgJson.directories.test + '/**/*.ts', pkgJson.directories.src + '/**/*.spec.ts', pkgJson.directories.src + '/**/*.test.ts']
   } else {
     // Let us first remove surrounding quotes in string (it gives issues in windows)
     testFilesStr = testFilesStr.replace(/^['"]/, '').replace(/['"]$/, '')
@@ -89,7 +89,7 @@ function processedTestFiles (testFilesStr) {
     throw new Error('no test files found for ' + testFilesStr)
   } else {
     filenames.forEach(file => {
-      const isTsTestFile = minimatch(file, '{test/**/*.ts,src/**/*.spec.ts}', { matchBase: true })
+      const isTsTestFile = minimatch(file, '{test/**/*.ts,src/**/*.spec.ts,src/**/*.test.ts}', { matchBase: true })
       if (!isTsTestFile) {
         throw new Error(`test file '${file}' not found`)
       }

@@ -1,8 +1,10 @@
 import { mkdirSync, writeFileSync } from 'fs'
 import ts from 'typescript'
-import { join, dirname, extname } from 'path'
-import { sync } from 'rimraf'
+import { join, dirname } from 'path'
+import { sync as rimrafSync } from 'rimraf'
 import * as url from 'url'
+import { sync as globSync } from 'glob'
+
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 const { readJsonConfigFile, sys, parseJsonSourceFileConfigFileContent, createCompilerHost, createProgram } = ts
@@ -33,20 +35,38 @@ export const compile = (outDir) => {
   host.writeFile = (fileName, contents) => {
     mkdirSync(dirname(fileName), { recursive: true })
     writeFileSync(fileName, contents)
-
-    // we also write the .d.cts types
-    let fileName2 = ''
-    if (extname(fileName) === '.ts') {
-      fileName2 = fileName.slice(0, -2) + 'cts'
-    } else { // ext is .d.ts.map
-      fileName2 = fileName.slice(0, -6) + 'cts.map'
-    }
-    writeFileSync(fileName2, contents)
   }
 
   // Clear the types dir
-  sync(outDir)
+  rimrafSync(outDir)
+
   // Prepare and emit the d.ts files
   const program = createProgram([srcFile], compilerOptions, host)
   program.emit()
+}
+
+export function compileDts () {
+  const tmpDeclarationsDir = join(rootDir, '.types')
+  return {
+    name: 'compile-dts',
+    sequential: true,
+    order: 'pre',
+    buildStart () {
+      compile(tmpDeclarationsDir)
+      return null
+    },
+    buildEnd () {
+      rimrafSync(tmpDeclarationsDir)
+    },
+    resolveId (source) {
+      if (source === join(rootDir, 'src', 'ts', 'index.ts')) {
+        const filenames = globSync('src/**/*.ts', { cwd: rootDir, matchBase: true, ignore: ['src/**/*.spec.ts', 'src/**/*.test.ts'] })
+        for (const file of filenames) {
+          this.addWatchFile(file)
+        }
+        return join(tmpDeclarationsDir, 'index.d.ts')
+      }
+      return null // other ids should be handled as usually
+    }
+  }
 }

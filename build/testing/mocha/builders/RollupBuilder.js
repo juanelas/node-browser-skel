@@ -5,7 +5,7 @@ const path = require('path')
 const rollup = require('rollup')
 const loadAndParseConfigFile = require('rollup/loadConfigFile').loadConfigFile
 
-const Builder = require('./Builder.cjs')
+const Builder = require('./Builder')
 
 const rootDir = path.join(__dirname, '../../../../')
 
@@ -28,22 +28,25 @@ class RollupBuilder extends Builder {
     this.watch = watch
     this.commonjs = commonjs
     this.watchedModule = commonjs ? pkgJson.exports['.'].node.require.default : pkgJson.exports['.'].node.import.default
+    const watchedModuleAbsPath = path.join(rootDir, this.watchedModule)
+    const dtsAbsPath = path.join(rootDir, pkgJson.types)
 
     const { options } = await loadAndParseConfigFile(this.configPath)
 
-    // Instead of compiling all the outputs let us just take the one we are using with mocha (either cjs or esm)
+    // Instead of compiling all the outputs let us just take the one we are using with mocha (either cjs or esm), and the rebuilding of the declaration files
     const rollupOptions = options.filter(bundle => {
       const file = (bundle.output[0].dir !== undefined)
         ? path.join(bundle.output[0].dir, bundle.output[0].entryFileNames)
         : bundle.output[0].file
-      return file === path.join(rootDir, this.watchedModule)
-    })[0]
-    if (rollupOptions.output.length > 1) {
-      rollupOptions.output = rollupOptions.output[0]
-    }
+      if (file === watchedModuleAbsPath) {
+        bundle.output[0].sourcemap = 'inline'
+        bundle.output[0].sourcemapExcludeSources = true
+      }
+      return (file === watchedModuleAbsPath) || (file === dtsAbsPath)
+    })
 
-    rollupOptions.output[0].sourcemap = 'inline'
-    rollupOptions.output[0].sourcemapExcludeSources = true
+    // rollupOptions.output[0].sourcemap = 'inline'
+    // rollupOptions.output[0].sourcemapExcludeSources = true
 
     this.builder = new RollupBundler({ rollupOptions, watch: this.watch, watchedModule: this.watchedModule })
 
@@ -57,6 +60,9 @@ class RollupBuilder extends Builder {
           } else {
             this.emit('message', 'file changes detected. Rebuilding module files...')
           }
+          break
+
+        case 'BUNDLE_START':
           break
 
         case 'BUNDLE_END':
@@ -105,7 +111,7 @@ class RollupBuilder extends Builder {
 class RollupBundler extends EventEmitter {
   constructor ({ rollupOptions, watchedModule, watch = false }) {
     super()
-    this.rollupOptions = rollupOptions
+    this.rollupOptions = [].concat(rollupOptions)
     this.watch = watch
     this.watchedModule = watchedModule
   }
@@ -124,12 +130,16 @@ class RollupBundler extends EventEmitter {
 
   async _bundle () {
     this.emit('event', { code: 'START' })
-    for (const optionsObj of [].concat(this.rollupOptions)) {
+    // for (const optionsObj of [].concat(this.rollupOptions)) {
+    for (let i = 0; i < this.rollupOptions.length; i++) {
+      const optionsObj = this.rollupOptions[i]
       try {
         const bundle = await rollup.rollup(optionsObj)
         try {
           await Promise.all(optionsObj.output.map(bundle.write))
-          this.emit('event', { code: 'BUNDLE_END' })
+          if (i === this.rollupOptions.length - 1) { // If all bundles have been bundled we're done
+            this.emit('event', { code: 'BUNDLE_END' })
+          }
         } catch (error) {
           this.emit('event', { code: 'ERROR', error })
         }
@@ -148,6 +158,6 @@ class RollupBundler extends EventEmitter {
 exports.RollupBuilder = RollupBuilder
 exports.rollupBuilder = new RollupBuilder({
   name: 'rollup',
-  configPath: path.join(rootDir, pkgJson.directories.build, 'rollup.config.js'),
+  configPath: path.join(rootDir, pkgJson.directories.build, 'rollup.config.mjs'),
   tempDir: mochaTsDir
 })
