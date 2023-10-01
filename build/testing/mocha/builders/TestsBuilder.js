@@ -84,6 +84,34 @@ function fixJsonAssertsInESMTests (dir, fileList = []) {
 //   })
 // }
 
+function injectCrypto (dir, commonjs, fileList = []) {
+  const files = fs.readdirSync(dir)
+
+  files.forEach(file => {
+    const srcFile = path.join(dir, file)
+    if (fs.statSync(srcFile).isDirectory()) {
+      fileList = injectCrypto(srcFile, commonjs, fileList)
+    } else {
+      const match = file.match(/(.*)\.js$/)
+      if (match !== null) {
+        const fileContents = fs.readFileSync(srcFile, 'utf8')
+        // we will look for crypto. but removing the comments first
+        if (fileContents.replace(/\/\*[\s\S]*?\*\/|(?<=[^:])\/\/.*|^\/\/.*/g, '').search(/[\s([]?(crypto\.)/g) !== -1) {
+          if (commonjs) {
+            const cryptoImport = "const crypto = require('crypto')\n"
+            const updatedFileContents = fileContents.slice(0, 13) + cryptoImport + fileContents.slice(13) // respect the first 'use strict';
+            fs.writeFileSync(srcFile, updatedFileContents, { encoding: 'utf8' })
+          } else {
+            const cryptoImport = "import * as crypto from 'crypto'\n"
+            const updatedFileContents = cryptoImport + fileContents
+            fs.writeFileSync(srcFile, updatedFileContents, { encoding: 'utf8' })
+          }
+        }
+      }
+    }
+  })
+}
+
 class TestsBuilder extends Builder {
   constructor ({ name, configPath, tempDir }) {
     super(path.join(tempDir, 'semaphore'), name)
@@ -166,6 +194,7 @@ class TestsBuilder extends Builder {
         }
 
         // fixResolvingModule(mochaTsDir, this.commonjs) // make #pkg point to the appropiate file
+        injectCrypto(mochaTsDir, commonjs)
         if (!this.commonjs) {
           fixJsonAssertsInESMTests(mochaTsDir)
           renameJsToMjs(mochaTsDir)
