@@ -106,11 +106,13 @@ export default [
     output: [
       {
         file: join(rootDir, pkgJson.exports['./esm-browser-bundle-nomin']),
-        format: 'es'
+        format: 'es',
+        sourcemap: true
       },
       {
         file: join(rootDir, pkgJson.exports['./esm-browser-bundle']),
         format: 'es',
+        sourcemap: true,
         plugins: [terser()]
       },
       {
