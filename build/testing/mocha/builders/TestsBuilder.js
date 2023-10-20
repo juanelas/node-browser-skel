@@ -161,6 +161,11 @@ class TestsBuilder extends Builder {
     // Removed typeroots (it causes issues)
     delete tsConfig.compilerOptions.typeRoots
 
+    // Update paths to the compiled version (so that we do not compile it again)
+    tsConfig.compilerOptions.paths = {
+      '#pkg': ['./dist/index.d.ts']
+    }
+
     tsConfig.compilerOptions.outDir = path.isAbsolute(this.tempDir) ? path.relative(rootDir, this.tempDir) : this.tempDir
 
     this.tempTsConfigPath = path.join(rootDir, '.tsconfig.json')
