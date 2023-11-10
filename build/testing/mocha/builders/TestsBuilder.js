@@ -41,7 +41,8 @@ function renameJsToMjs (dir, fileList = []) {
         const dstFile = path.join(dir, `${filename}.mjs`)
         fs.renameSync(srcFile, dstFile)
         const fileContents = fs.readFileSync(dstFile, 'utf8')
-        const updatedFileContents = fileContents.replace(/(require\([`'"])(\..*[^.]{5})([`'"])/g, '$1$2.mjs$3')
+
+        const updatedFileContents = fileContents.replace(/^(import\s.*from\s['"]\..*?)(\.m?js)?(['"];?)$/mg, '$1.mjs$3')
         fs.writeFileSync(dstFile, updatedFileContents, { encoding: 'utf8' })
       }
     }
