@@ -60,7 +60,14 @@ async function typedoc () {
     hideBreadcrumbs: true,
     hidePageHeader: true,
     excludePrivate: true,
-    outputFileStrategy: 'modules'
+    outputFileStrategy: 'modules',
+    indexFormat: 'table',
+    parametersFormat: 'table',
+    interfacePropertiesFormat: 'table',
+    classPropertiesFormat: 'table',
+    enumMembersFormat: 'table',
+    typeDeclarationFormat: 'table',
+    propertyMembersFormat: 'table'
   })
   // If you want TypeDoc to load tsconfig.json / typedoc.json files
   app.options.addReader(new TypeDoc.TSConfigReader())
