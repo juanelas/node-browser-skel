@@ -81,7 +81,7 @@ function parse () {
     mochaArgs.push(requiredFile)
   }
   mochaArgs.push('--require')
-  mochaArgs.push('build/testing/mocha/mocha-init')
+  mochaArgs.push('build/testing/mocha/mocha-init.js')
 
   if (timeout !== '') {
     mochaArgs.push('--timeout')

@@ -52,39 +52,25 @@ async function typedoc () {
     // typedoc options here
     tsconfig: tempTsConfigPath,
     entryPoints: ['src/ts/index.ts'],
+    entryFileName: 'API',
     disableSources: true,
     plugin: ['typedoc-plugin-markdown'],
     includeVersion: true,
-    entryDocument: 'API.md',
     readme: 'none',
     hideBreadcrumbs: true,
-    excludePrivate: true
+    hidePageHeader: true,
+    excludePrivate: true,
+    outputFileStrategy: 'modules'
   })
-
   // If you want TypeDoc to load tsconfig.json / typedoc.json files
   app.options.addReader(new TypeDoc.TSConfigReader())
   // app.options.addReader(new TypeDoc.TypeDocReader())
 
-  // app.bootstrap({
-  //   // typedoc options here
-  //   tsconfig: tempTsConfigPath,
-  //   entryPoints: ['src/ts/index.ts'],
-  //   disableSources: true,
-  //   plugin: ['typedoc-plugin-markdown'],
-  //   includeVersion: true,
-  //   entryDocument: 'API.md',
-  //   readme: 'none',
-  //   hideBreadcrumbs: true,
-  //   excludePrivate: true
-  // })
-
   const project = await app.convert()
 
-  if (project) {
-    // Project may not have converted correctly
+  if (project) { // Project may not have converted correctly
     const output = path.join(rootDir, './docs')
-
-    // Rendered docs
+    // Render docs
     await app.generateDocs(project, output)
   }
 
