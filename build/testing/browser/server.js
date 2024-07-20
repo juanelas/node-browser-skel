@@ -97,14 +97,14 @@ class TestServer {
 
   async init (testFiles) {
     /** Let us first check if the necessary files are built, and if not, build */
-    if (!fs.existsSync(pkgJson.exports['./esm-browser-bundle'])) {
+    if (!fs.existsSync(pkgJson.nodeBrowserSkel.bundles['./esm-browser-bundle'])) {
       await runScript(path.join(rootDir, 'node_modules', '.bin', 'rollup'), ['-c', 'build/rollup.config.mjs'])
     }
 
     const tests = await buildTests(testFiles)
     this.server.on('request', function (req, res) {
       if (req.url === `/${name}.esm.js`) {
-        fs.readFile(path.join(rootDir, pkgJson.exports['./esm-browser-bundle']), function (err, data) {
+        fs.readFile(path.join(rootDir, pkgJson.nodeBrowserSkel.bundles['./esm-browser-bundle']), function (err, data) {
           if (err) {
             res.writeHead(404)
             res.end(JSON.stringify(err))
@@ -113,8 +113,8 @@ class TestServer {
           res.writeHead(200, { 'Content-Type': 'text/javascript' })
           res.end(data)
         })
-      } else if (req.url === '/' + path.basename(pkgJson.exports['./esm-browser-bundle'] + '.map')) {
-        fs.readFile(path.join(rootDir, pkgJson.exports['./esm-browser-bundle'] + '.map'), function (err, data) {
+      } else if (req.url === '/' + path.basename(pkgJson.nodeBrowserSkel.bundles['./esm-browser-bundle'] + '.map')) {
+        fs.readFile(path.join(rootDir, pkgJson.nodeBrowserSkel.bundles['./esm-browser-bundle'] + '.map'), function (err, data) {
           if (err) {
             res.writeHead(404)
             res.end(JSON.stringify(err))

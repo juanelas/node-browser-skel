@@ -22,3 +22,6 @@ coverage
 
 # docs temporal files
 .nojekyll
+
+# built files
+dist

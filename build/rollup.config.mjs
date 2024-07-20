@@ -105,24 +105,24 @@ export default [
     input,
     output: [
       {
-        file: join(rootDir, pkgJson.exports['./esm-browser-bundle-nomin']),
+        file: join(rootDir, pkgJson.nodeBrowserSkel.bundles['./esm-browser-bundle-nomin']),
         format: 'es',
         sourcemap: true
       },
       {
-        file: join(rootDir, pkgJson.exports['./esm-browser-bundle']),
+        file: join(rootDir, pkgJson.nodeBrowserSkel.bundles['./esm-browser-bundle']),
         format: 'es',
         sourcemap: true,
         plugins: [terser()]
       },
       {
-        file: join(rootDir, pkgJson.exports['./iife-browser-bundle']),
+        file: join(rootDir, pkgJson.nodeBrowserSkel.bundles['./iife-browser-bundle']),
         format: 'iife',
         name: pkgCamelisedName,
         plugins: [terser()]
       },
       {
-        file: join(rootDir, pkgJson.exports['./umd-browser-bundle']),
+        file: join(rootDir, pkgJson.nodeBrowserSkel.bundles['./umd-browser-bundle']),
         format: 'umd',
         name: pkgCamelisedName,
         plugins: [terser()]

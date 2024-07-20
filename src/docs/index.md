@@ -1,7 +1,7 @@
 [![License: {{PKG_LICENSE}}](https://img.shields.io/badge/License-{{PKG_LICENSE}}-yellow.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-{{GITHUB_ACTIONS_BADGES}}
+{{BADGES}}
 
 # Skeleton for developing modules for browser and Node.js in Typescript
 
@@ -65,7 +65,9 @@ git init
 git add -A
 ```
 
-Edit `package.json` to suit your needs and initialize the project with:
+Edit `package.json` keys: `name`, `description`, `keywords`, `author`, `repository` (or delete line if you do not have one), and `license` (if you change license type, please update `LICENSE` file with your chosen one).
+
+Initialize the project with:
 
 ```console
 npm i
@@ -92,6 +94,7 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 - `npm run docs`. Generates the `README.md` and the API doc `./docs/API.md` (consider documenting your exported classes/functions using [TSDoc](https://tsdoc.org/) for a meaningful API doc). Some labels in the `src/README.md` file will be automatically replaced in the generated `README.md`:
 
   - &#123;&#123;PKG_NAME&#125;&#125; is automatically replaced with property `name` in `package.json` file.
+  - &#123;&#123;PKG_NAME_NO_SCOPE&#125;&#125; is automatically replaced with property `name` in `package.json` file without the scope. E.g. `@juanelas/my-pkg` would become `my-pkg`.
   - &#123;&#123;PKG_DESCRIPTION&#125;&#125; is automatically replaced with property `description` in `package.json` file.
   - &#123;&#123;PKG_CAMELCASE&#125;&#125; will be replaced by a camel case transformation of the package name.
   - &#123;&#123;IIFE_BUNDLE&#125;&#125; will point to the IIFE bundle file if using github or gitlab as repository.
@@ -142,13 +145,13 @@ import * as {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
 > - `{{PKG_NAME}}/dist/esm/index.node`: for Node.js ESM module
 > - `{{PKG_NAME}}/dist/esm/index.browser`: for browser ESM module
 >
-> If you are coding TypeScript, types will not be automatically detected when using the specific versions. You can easily get the types in by creating adding to a types declaration file (`.d.ts`) the following line:
+> If you are coding TypeScript, types will not be automatically detected when using the specific versions. You can easily get the types in by creating and importing to your TS project a new types declaration file `{{PKG_NAME_NO_SCOPE}}.d.ts` with the following line:
 >
 > ```typescript
-> declare module '{{PKG_NAME}}/dist/esm/index.browser' // use the specific file you were importing
+> declare module '{{PKG_NAME}}/dist/esm/index.browser' // use the specific module file you are importing
 > ```
 
-You can also download the {{IIFE_BUNDLE}}, the {{ESM_BUNDLE}} or the {{UMD_BUNDLE}} and manually add it to your project, or, if you have already installed `{{PKG_NAME}}` in your project, just get the bundles from `node_modules/{{PKG_NAME}}/dist/bundles/`.
+{{BROWSER_BUNDLES_INSTALLATION}}
 
 ## Usage example
 

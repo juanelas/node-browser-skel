@@ -1,17 +1,20 @@
 {
   "name": "@my-scope/my-package-name",
-  "version": "0.9.4",
-  "description": "My package is wonderful",
+  "description": "My package is wonderful.",
   "keywords": [
     "keyword1",
     "keyword2"
   ],
-  "license": "EUPL-1.2",
   "author": {
     "name": "My name",
     "email": "email@myemaildomain.com"
   },
-  "repository": "repoprovider:username/my-package-name",
+  "repository": {
+    "type": "git",
+    "url": "git+https://myrepoprovider.com/username/my-package-name.git"
+  },
+  "license": "EUPL-1.2",
+  "version": "0.9.4",
   "main": "./dist/cjs/index.node.js",
   "browser": "./dist/esm/index.browser.js",
   "types": "./dist/index.d.ts",
@@ -27,20 +30,12 @@
           "default": "./dist/cjs/index.node.js"
         }
       },
-      "script": "./dist/bundle.iife.js",
+      "script": "./dist/bundles/iife.js",
       "default": {
         "types": "./dist/index.d.ts",
         "default": "./dist/esm/index.browser.js"
       }
     },
-    "./esm-browser-bundle": "./dist/esm/bundle.min.js",
-    "./dist/esm/bundle.min.js": "./dist/esm/bundle.min.js",
-    "./esm-browser-bundle-nomin": "./dist/esm/bundle.js",
-    "./dist/esm/bundle.js": "./dist/esm/bundle.js",
-    "./iife-browser-bundle": "./dist/bundle.iife.js",
-    "./dist/bundle.iife.js": "./dist/bundle.iife.js",
-    "./umd-browser-bundle": "./dist/bundle.umd.js",
-    "./dist/bundle.umd.js": "./dist/bundle.umd.js",
     "./dist/cjs/index.node": {
       "types": "./dist/index.d.ts",
       "default": "./dist/cjs/index.node.js"
@@ -130,10 +125,16 @@
   "nodeBrowserSkel": {
     "badges": {
       "workflow": true,
-      "coveralls": true
+      "coveralls": false
     },
     "git": {
       "branch": "main"
+    },
+    "bundles": {
+      "./esm-browser-bundle": "./dist/bundles/esm.min.js",
+      "./esm-browser-bundle-nomin": "./dist/bundles/esm.js",
+      "./iife-browser-bundle": "./dist/bundles/iife.js",
+      "./umd-browser-bundle": "./dist/bundles/umd.js"
     }
   },
   "devDependencies": {

@@ -1,6 +1,9 @@
 # Build scripts
 build
 
+# Bundles
+dist/bundles
+
 # Test files
 test
 __tests__
