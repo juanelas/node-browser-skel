@@ -34,7 +34,7 @@ jobs:
       - name: build
         run: npm run build
 
-      - if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.5.1' # 22.5.1 is a temporary fix since 22 now points to 22.5.0 that has a bug that breaks installation
+      - if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20'
         name: browser tests
         run: npm run test:browser-headless
         # env:
