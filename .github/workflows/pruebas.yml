@@ -17,7 +17,8 @@ jobs:
       #     node-version: '22.5.1' # 22.5.1 is a temporary fix since 22 now points to 22.5.0 that has a bug that breaks installation
       #     registry-url: 'https://registry.npmjs.org'
 
-      - run: |
+      - name: Read package.json
+        run: |
           echo 'PACKAGE_JSON<<EOF' >> $GITHUB_ENV
           cat ./package.json >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
@@ -26,7 +27,8 @@ jobs:
           echo '${{ fromJson(env.PACKAGE_JSON).private }}'
           echo '${{ fromJson(env.PACKAGE_JSON).nodeBrowserSkel.coveralls }}'
 
-      - if: ${{ ! fromJson(env.PACKAGE_JSON).private }}
+      - name: NPM publish
+        if: ${{ ! fromJson(env.PACKAGE_JSON).private }}
         run: |
           echo "NPM Publish!"
       
