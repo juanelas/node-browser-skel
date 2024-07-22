@@ -24,9 +24,13 @@ jobs:
       - run: |
           echo '${{ fromJson(env.PACKAGE_JSON).version }}'
           echo '${{ fromJson(env.PACKAGE_JSON).private }}'
-          echo '${{ fromJson(env.PACKAGE_JSON).nodeBrowserSkel.badges.coveralls }}'
+          echo '${{ fromJson(env.PACKAGE_JSON).nodeBrowserSkel.coveralls }}'
 
       - if: ${{ ! fromJson(env.PACKAGE_JSON).private }}
         run: |
-          echo "Publish!"
+          echo "NPM Publish!"
+      
+      - if: ${{ fromJson(env.PACKAGE_JSON).nodeBrowserSkel.coveralls }}
+        run: |
+          echo "Coveralls!"
 
