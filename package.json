@@ -1,6 +1,7 @@
 {
   "name": "@my-scope/my-package-name",
   "description": "My package is wonderful.",
+  "private": false,
   "keywords": [
     "keyword1",
     "keyword2"

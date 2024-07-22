@@ -26,7 +26,7 @@ jobs:
           echo '${{ fromJson(env.PACKAGE_JSON).private }}'
           echo '${{ fromJson(env.PACKAGE_JSON).nodeBrowserSkel.badges.coveralls }}'
 
-      - if: ${{ fromJson(env.PACKAGE_JSON).private == null || ! fromJson(env.PACKAGE_JSON).private }}
+      - if: ${{ ! fromJson(env.PACKAGE_JSON).private }}
         run: |
           echo "Publish!"
 
