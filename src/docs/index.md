@@ -67,6 +67,8 @@ git add -A
 
 Edit `package.json` keys: `name`, `description`, `keywords`, `author`, `repository` (or delete line if you do not have one), and `license` (if you change license type, please update `LICENSE` file with your chosen one).
 
+In `package.json`->`nodeBrowserSkel` you can configure things like the default branch for the workflows, the badges to appear in the readme and whether to sync with <https://coveralls.io/> as part of the github workflow after a new version push.
+
 Initialize the project with:
 
 ```console

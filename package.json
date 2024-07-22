@@ -68,13 +68,15 @@
     }
   },
   "directories": {
-    "build": "./build",
-    "dist": "./dist",
-    "docs": "./docs",
-    "src": "./src",
-    "test": "./test",
-    "benchmark": "./benchmark",
-    "mocha-ts": "./.mocha-ts"
+    "build": "build",
+    "bundles": "dist/bundles",
+    "dist": "dist",
+    "docs": "docs",
+    "src": "src",
+    "test": "test",
+    "benchmark": "benchmark",
+    "temp": ".nbs",
+    "mocha-ts": ".nbs/mocha-ts"
   },
   "scripts": {
     "_build:cleantypes": "rimraf .types",
@@ -82,7 +84,7 @@
     "build": "run-s lint:src build:js lint:test docs",
     "build:js": "rollup -c build/rollup.config.mjs",
     "postbuild:js": "run-s _build:cleantypes _build:cjsAndesmPkgJsons",
-    "clean": "rimraf .mocha-ts coverage dist .types docs",
+    "clean": "rimraf .nbs coverage dist .types docs",
     "coverage": "c8 --clean --check-coverage --exclude \"{src/ts/**/*.spec.ts,src/ts/**/*.test.ts,test,test-vectors,build}\" --exclude-after-remap --reporter=text --reporter=lcov node ./build/bin/mocha-ts.js --commonjs ",
     "docs": "node build/build.docs.js",
     "git:add": "git add -A",
@@ -124,19 +126,13 @@
     ]
   },
   "nodeBrowserSkel": {
-    "coveralls": false,
+    "syncWithCoveralls": false,
     "badges": {
       "workflow": true,
       "coveralls": false
     },
     "git": {
       "branch": "main"
-    },
-    "bundles": {
-      "./esm-browser-bundle": "./dist/bundles/esm.min.js",
-      "./esm-browser-bundle-nomin": "./dist/bundles/esm.js",
-      "./iife-browser-bundle": "./dist/bundles/iife.js",
-      "./umd-browser-bundle": "./dist/bundles/umd.js"
     }
   },
   "devDependencies": {
@@ -166,6 +162,6 @@
     "ts-standard": "^12.0.2",
     "tslib": "^2.6.2",
     "typedoc-plugin-markdown": "^4.2.1",
-    "typescript": "^5.1.0"
+    "typescript": "^5.1.3"
   }
 }

@@ -46,7 +46,7 @@ tsconfig.json
 *.env.*
 
 # Test temporal files
-.mocha-ts
+.nbs
 .tsconfig.json
 .types
 

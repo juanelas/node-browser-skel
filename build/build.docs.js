@@ -135,7 +135,7 @@ function variableReplacements () {
   }
 
   let workflowBadge, coverallsBadge
-  let browserBundlesInstallation = 'You can also build the project with `npm run build` and get the ESM, IIFE and/or UMD module files fomr `dist/bundles/`.'
+  let browserBundlesInstallation = 'You can also build the project with `npm run build` and get the ESM, IIFE and/or UMD module files fomr `' + pkgJson.directories.bundles + '`.'
 
   if (repoProvider) {
     switch (repoProvider) {

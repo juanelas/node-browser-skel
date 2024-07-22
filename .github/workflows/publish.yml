@@ -46,7 +46,7 @@ jobs:
           name: "v${{ fromJson(env.PACKAGE_JSON).version }} browser bundles"
 
       - name: send report to coveralls.io
-        if: ${{ fromJson(env.PACKAGE_JSON).nodeBrowserSkel.coveralls }}
+        if: ${{ fromJson(env.PACKAGE_JSON).nodeBrowserSkel.syncWithCoveralls }}
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
