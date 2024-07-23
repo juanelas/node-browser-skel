@@ -2,7 +2,7 @@ name: Publish
 
 on:
     workflow_run:
-        workflows: ['CI/CD']
+        workflows: ['build n test']
         types: [completed]
     workflow_dispatch:
 
