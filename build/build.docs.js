@@ -141,7 +141,7 @@ function variableReplacements () {
     switch (repoProvider) {
       case 'github':
         browserBundlesInstallation = `You can also download browser ESM, IIFE and UMD bundles directly from the [releases' page](https://github.com/${repoUsername}/${repoName}/releases) and manually add them to your project.`
-        workflowBadge = useWorkflowBadge ? `[![Node.js CI](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml)` : undefined
+        workflowBadge = useWorkflowBadge ? `[![Build and test](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml)` : undefined
         coverallsBadge = useCoverallsBadge ? `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=refs/tags/v0.1.5)](https://coveralls.io/github/${repoUsername}/${repoName}?branch=refs/tags/v${pkgJson.version})` : undefined
         break
 
