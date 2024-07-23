@@ -118,7 +118,9 @@ The `README.md` file is automatically generated from the `src/docs/index.md` fil
 
 My package is wonderful.
 
-More details about you package...
+- [Install and use](#install-and-use)
+- [Usage example](#usage-example)
+- [API reference documentation](#api-reference-documentation)
 
 ## Install and use
 
