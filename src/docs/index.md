@@ -5,7 +5,7 @@
 
 # Skeleton for developing modules for browser and Node.js in Typescript
 
-> This entire section with all its subsections (Installation, Tooling, Scripts) should be removed from your `src/docs/index.md` after installing. The rest of sections may be useful for your package readme, and you may just modified them in `src/docs/index.md` to meet your needs.
+> This entire section with all its subsections (Installation, Tooling, Scripts) should be removed from your `src/docs/index.md` after installing. The rest of sections may be useful for your package readme, and you may just modify them in `src/docs/index.md` to meet your needs.
 
 This is a skeleton for developing JS modules in Typescript that work both in Node.js and native JavaScript. The idea is that you should just focus on developing your typescript code in the `src/ts` folder, and the necessary JS files and bundles will be created so that it can be used with no effort in every environment.
 
@@ -21,7 +21,7 @@ if (IS_BROWSER === 'true') {
 
 Besides the actual code, you should create unit testing (mocha+chai) files either in the `test` or the `src/ts` directory, although in the latter case only files ending with `.spec.ts` or `.test.ts` will be considered as test files.
 
-When creating the tests, you MUST NOT import either `mocha`, `chai` or your package. They have been automatically added to the global scope. You must import your module with the shortcut `#pkg`. In short:
+When creating the tests, you MUST NOT import either `mocha` or `chai`, since they have been automatically added to the global scope. You MUST IMPORT your module with the shortcut `#pkg`. In short:
 
 - `mocha` global variable points to mocha;
 - `chai` points to chai;
