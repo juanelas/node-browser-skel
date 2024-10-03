@@ -26,13 +26,16 @@ const indexHtml = `<!DOCTYPE html>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>${name}</title>
     <script src="/mocha.js"></script>
-    <script src="/chai.js"></script>
   </head>
 
   <body>
 
   </body>
     <div id="mocha"></div>
+    <script type="module">
+      import * as chai from './chai.js';
+      globalThis.chai = chai;
+    </script>
     <script>
       mocha.setup({
         ui: 'bdd',

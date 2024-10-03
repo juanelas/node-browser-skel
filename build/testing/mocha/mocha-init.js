@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const path = require('path')
-const chai = require('chai')
+// const chai = require('chai')
 const rimraf = require('rimraf')
 require('dotenv').config()
 
@@ -15,7 +15,7 @@ const pkgJson = require(path.join(rootDir, 'package.json'))
 const mochaTsRelativeDir = pkgJson.directories['mocha-ts']
 const tempDir = path.join(rootDir, mochaTsRelativeDir)
 
-global.chai = chai
+// global.chai = chai
 global.IS_BROWSER = false
 
 const watch = process.argv.includes('--watch') || process.argv.includes('-w')
@@ -30,6 +30,7 @@ commonjs = watch ? true : commonjs // mocha in watch mode only supports commonjs
 global._MODULE_TYPE = commonjs ? 'CJS' : 'ESM'
 
 exports.mochaGlobalSetup = async function () {
+  global.chai = await import('chai')
   if (watch) {
     await rollupBuilder.start({ commonjs, watch })
     testsBuilder.start({ testFiles, commonjs })
