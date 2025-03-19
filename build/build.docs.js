@@ -67,7 +67,8 @@ async function typedoc () {
     classPropertiesFormat: 'table',
     enumMembersFormat: 'table',
     typeDeclarationFormat: 'table',
-    propertyMembersFormat: 'table'
+    propertyMembersFormat: 'table',
+    router: 'module'
   })
   // If you want TypeDoc to load tsconfig.json / typedoc.json files
   app.options.addReader(new TypeDoc.TSConfigReader())

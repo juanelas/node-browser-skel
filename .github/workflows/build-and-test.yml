@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ['18', '20', '22.5.1'] # 22.5.1 is a temporary fix since 22 now points to 22.5.0 that has a bug that breaks installation
+        node-version: ['18', '20', '22']
       # When set to true, GitHub cancels all in-progress jobs if any matrix job fails.
       fail-fast: false
       # The maximum number of jobs that can run simultaneously. Set to 1 if you can't run tests in parallel
@@ -34,7 +34,7 @@ jobs:
       - name: build
         run: npm run build
 
-      - if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20'
+      - if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22'
         name: browser tests
         run: npm run test:browser-headless
         # env:
